@@ -1,0 +1,33 @@
+package com.example.attendance.presentation.candidateListScreen
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.attendance.domain.model.CandidateListData
+import com.example.attendance.domain.model.DomainType
+import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CandidateListViewModel @Inject constructor(
+    getDomain: GetSelectedDomainUseCase
+) : ViewModel() {
+    var domain by mutableStateOf(DomainType.RSETI)
+        private set
+
+    val candidates = listOf(
+        CandidateListData("Walvinder Singh", 1, "9231949074"),
+        CandidateListData("Tabish Jamal", 2, "9524163521"),
+        CandidateListData("Faizan Ahmed", 3, "9999999999")
+    )
+
+    init {
+        viewModelScope.launch {
+            getDomain().collect { domain = it }
+        }
+    }
+}

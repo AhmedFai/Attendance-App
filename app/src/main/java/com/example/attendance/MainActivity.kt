@@ -1,0 +1,78 @@
+package com.example.attendance
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import com.example.attendance.presentation.navGraph.navGraph
+import com.example.attendance.ui.theme.AttendanceTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    val viewModel by viewModels<MainViewModel>()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        //enableEdgeToEdge()
+//        installSplashScreen().apply {
+//            setKeepOnScreenCondition{
+//                viewModel.splashScreenCondition
+//            }
+//        }
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
+        setContent {
+            AttendanceTheme(darkTheme = false) {
+                val isSystemInDarkMode = isSystemInDarkTheme()
+                val systemController = rememberSystemUiController()
+                SideEffect {
+                    systemController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = !isSystemInDarkMode
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.background)
+                ) {
+                    val startDestination = viewModel.uiState.collectAsState().value
+                    if (startDestination != null) {
+                        navGraph(startDestination)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    AttendanceTheme {
+        Greeting("Android")
+    }
+}
