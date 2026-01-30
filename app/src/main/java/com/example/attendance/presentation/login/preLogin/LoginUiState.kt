@@ -1,9 +1,7 @@
-package com.example.attendance.presentation.login
+package com.example.attendance.presentation.login.preLogin
 
 import com.example.attendance.domain.model.login.LoginResponse
-import com.example.attendance.util.ApiState
 import com.example.attendance.util.UiText
-import kotlinx.coroutines.flow.Flow
 
 data class LoginUiState(
     val isLoading: Boolean = false,

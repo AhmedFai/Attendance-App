@@ -7,7 +7,7 @@ import com.example.attendance.presentation.attendance.AttendanceScreen
 import com.example.attendance.presentation.batchListScreen.BatchListScreen
 import com.example.attendance.presentation.candidateListScreen.CandidateListScreen
 import com.example.attendance.presentation.home.HomeScreen
-import com.example.attendance.presentation.login.LoginScreen
+import com.example.attendance.presentation.login.preLogin.LoginScreen
 
 @Composable
 fun navGraph(

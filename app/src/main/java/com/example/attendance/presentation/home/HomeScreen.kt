@@ -27,8 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
+import com.example.attendance.presentation.home.shimmer.HomeShimmer
 import com.example.attendance.ui.theme.dimens
 
 @Composable
@@ -47,6 +49,7 @@ fun HomeScreen(
     onMarkAttendance: () -> Unit
 ) {
 
+    val uiState = viewModel.uiState
     val isLoggingOut = viewModel.isLoggingOut
     val dimens = MaterialTheme.dimens
 
@@ -60,90 +63,95 @@ fun HomeScreen(
         visible = !isLoggingOut,
         exit = fadeOut() + scaleOut()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .background(Color.White)
-                .padding(bottom = dimens.screenPaddingVertical)
-        ) {
-            Box(
+
+        if (uiState.isLoading){
+            HomeShimmer()
+        }else{
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .background(Color.White)
+                    .padding(bottom = dimens.screenPaddingVertical)
             ) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(0, 0, 15, 15))
-                        .height(dimens.homeBackgroundBox)
-                        .background(
-                            Brush.verticalGradient(viewModel.domain.gradient)
-                        )
-                )
-
-                // 🧱 SOLID BACKGROUND BELOW
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = dimens.homeBackgroundBox)
                         .background(Color.White)
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = dimens.spaceL),
-                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-                    Spacer(Modifier.height(dimens.space3XL))
 
                     Box(
                         modifier = Modifier
-                            .height(dimens.logoHeight)
-                            .width(dimens.logoWidth)
-                            .padding(dimens.spaceS)
-                            .clip(RoundedCornerShape(dimens.spaceXS))
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(0, 0, 15, 15))
+                            .height(dimens.homeBackgroundBox)
+                            .background(
+                                Brush.verticalGradient(viewModel.domain.gradient)
+                            )
+                    )
+
+                    // 🧱 SOLID BACKGROUND BELOW
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = dimens.homeBackgroundBox)
+                            .background(Color.White)
+                    )
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = dimens.spaceL),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Image(
-                            painter = painterResource(
-                                if (viewModel.domain == DomainType.DDUGKY)
-                                    R.drawable.ic_ddgky
-                                else
-                                    R.drawable.ic_rseti
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier.height(dimens.space2XL)
-                        )
-                    }
 
-                    Spacer(Modifier.height(dimens.spaceL))
+                        Spacer(Modifier.height(dimens.space3XL))
 
-                    // 👤 PROFILE CARD
-                    ProfileCard(
-                        domain = viewModel.domain,
-                        userName = viewModel.userName,
-                        email = viewModel.email,
-                        onLogout = {
-                            viewModel.logout()
+                        Box(
+                            modifier = Modifier
+                                .height(dimens.logoHeight)
+                                .width(dimens.logoWidth)
+                                .padding(dimens.spaceS)
+                                .clip(RoundedCornerShape(dimens.spaceXS))
+                                .background(Color.White),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(
+                                    if (viewModel.domain == DomainType.DDUGKY)
+                                        R.drawable.ic_ddgky
+                                    else
+                                        R.drawable.ic_rseti
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier.height(dimens.space2XL)
+                            )
                         }
-                    )
 
-                    Spacer(Modifier.height(dimens.spaceL))
+                        Spacer(Modifier.height(dimens.spaceL))
 
-                    // 🔲 ACTION GRID
-                    ActionGrid(
-                        domain = viewModel.domain,
-                        onMarkAttendance = { onMarkAttendance() },
-                        onOfflineData = {},
-                        onFetchEmbeddings = {},
-                        onSync = {}
-                    )
+                        // 👤 PROFILE CARD
+                        ProfileCard(
+                            domain = viewModel.domain,
+                            userName = viewModel.uiState.userName,
+                            email = viewModel.uiState.email,
+                            onLogout = {
+                                viewModel.logout()
+                            }
+                        )
 
+                        Spacer(Modifier.height(dimens.spaceL))
+
+                        // 🔲 ACTION GRID
+                        ActionGrid(
+                            domain = viewModel.domain,
+                            onMarkAttendance = { onMarkAttendance() },
+                            onOfflineData = {},
+                            onFetchEmbeddings = {},
+                            onSync = {}
+                        )
+
+                    }
                 }
             }
         }

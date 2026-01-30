@@ -1,14 +1,16 @@
-package com.example.attendance.presentation.login
+package com.example.attendance.presentation.login.preLogin
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.domain.model.UserSession
 import com.example.attendance.domain.model.login.LoginRequest
-import com.example.attendance.domain.usecase.LoginUseCase
+import com.example.attendance.domain.repository.NetworkChecker
+import com.example.attendance.domain.usecase.auth.LoginUseCase
 import com.example.attendance.domain.usecase.auth.GetLoginSessionUseCase
 import com.example.attendance.domain.usecase.auth.SaveLoginSessionUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
@@ -30,7 +32,8 @@ class LoginViewModel @Inject constructor(
     private val saveDomain: SaveDomainUseCase,
     getSession: GetLoginSessionUseCase,
     private val saveSession: SaveLoginSessionUseCase,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val networkChecker: NetworkChecker
 ) : ViewModel() {
 
     private val _loginUiState = MutableStateFlow(LoginUiState())
@@ -91,6 +94,12 @@ class LoginViewModel @Inject constructor(
             _loginUiState.value = LoginUiState()
 
             if (!validate()) return@launch
+            if (!networkChecker.isConnected()){
+                    _loginUiEvent.emit(
+                        LoginUiEvent.ShowToast(UiText.StringRes(R.string.noInternetConnection))
+                    )
+                return@launch
+            }
             loginUseCase(loginRequest).collect { state ->
                 when (state) {
                     is ApiState.Error -> {
@@ -120,12 +129,13 @@ class LoginViewModel @Inject constructor(
                     is ApiState.Success -> {
                         _loginUiState.value = LoginUiState(
                             data = state.data,
-                            isLoading = false
+                            //isLoading = false
                         )
                         _loginUiEvent.emit(
-                            LoginUiEvent.ShowToast(UiText.StringRes(com.example.attendance.R.string.loginSuccess))
+                            LoginUiEvent.ShowToast(UiText.StringRes(R.string.loginSuccess))
                         )
-                        saveSession(UserSession(userId, state.data.accessToken, true))
+                        saveSession(UserSession(userId, state.data.accessToken, false))
+                        _loginUiEvent.emit(LoginUiEvent.StartBootStrap)
                     }
                 }
             }
@@ -138,7 +148,7 @@ class LoginViewModel @Inject constructor(
         if (userId.isBlank()) {
             _loginUiState.value =
                 _loginUiState.value.copy(
-                    userIdError = UiText.StringRes(com.example.attendance.R.string.userIdRequired)
+                    userIdError = UiText.StringRes(R.string.userIdRequired)
                 )
             valid = false
         }
@@ -146,7 +156,7 @@ class LoginViewModel @Inject constructor(
         if (password.isBlank()) {
             _loginUiState.value =
                 _loginUiState.value.copy(
-                    passwordError = UiText.StringRes(com.example.attendance.R.string.passwordRequired)
+                    passwordError = UiText.StringRes(R.string.passwordRequired)
                 )
             valid = false
         }

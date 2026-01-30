@@ -1,5 +1,6 @@
 package com.example.attendance.data.network
 
+import com.example.attendance.BuildConfig
 import com.example.attendance.data.datastore.AppPreferences
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.util.Constants
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     private val preferences: AppPreferences
-): Interceptor {
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val (domain, token) = runBlocking {
@@ -28,6 +29,7 @@ class AuthInterceptor @Inject constructor(
                 headerKey,
                 "${Constants.AUTH_PREFIX} $token"
             )
+            .addHeader(Constants.APP_VERSION, BuildConfig.VERSION_NAME)
             .build()
 
         return chain.proceed(newRequest)

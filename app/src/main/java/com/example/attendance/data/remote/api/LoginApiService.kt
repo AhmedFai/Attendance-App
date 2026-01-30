@@ -1,4 +1,4 @@
-package com.example.attendance.data.api
+package com.example.attendance.data.remote.api
 
 import com.example.attendance.domain.model.login.LoginRequest
 import com.example.attendance.domain.model.login.LoginResponse

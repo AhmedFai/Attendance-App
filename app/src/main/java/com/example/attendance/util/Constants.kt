@@ -17,10 +17,11 @@ object Constants {
     const val DDUGKY_AUTH_HEADER = "ddugkyofflineappauth"
     const val RSETI_AUTH_HEADER = "rsetiofflineappauth"
     const val AUTH_PREFIX = "Bearer"
+    const val APP_VERSION = "appVersion"
 
 
 
-
+    // SDK keys
     const val RESULT_STATUS = "status"
     const val RESULT_MESSAGE = "message"
     const val YOUR_CLIENT_ID = "RD_0725"

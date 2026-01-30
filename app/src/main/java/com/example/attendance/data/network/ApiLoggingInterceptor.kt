@@ -16,16 +16,18 @@ class ApiLoggingInterceptor @Inject constructor() : Interceptor {
 
         val requestBody = try {
             buffer.readString(Charset.forName("UTF-8"))
-        }catch (e: Exception){
+        } catch (e: Exception) {
             "N/A"
         }
 
-        Log.e("API_REQUEST", """
+        Log.e(
+            "API_REQUEST", """
             ➡️ URL: ${request.url}
             ➡️ METHOD: ${request.method}
             ➡️ HEADERS: ${request.headers}
             ➡️ BODY: $requestBody
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         val response = chain.proceed(request)
 
@@ -38,11 +40,13 @@ class ApiLoggingInterceptor @Inject constructor() : Interceptor {
             "N/A"
         }
 
-        Log.e("API_RESPONSE", """
+        Log.e(
+            "API_RESPONSE", """
             ⬅️ URL: ${response.request.url}
             ⬅️ CODE: ${response.code}
             ⬅️ BODY: $responseBody
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         return response
     }

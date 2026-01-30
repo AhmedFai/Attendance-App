@@ -1,4 +1,4 @@
-package com.example.attendance.domain.model.masterData
+package com.example.attendance.domain.model.candidateMasterData
 
 data class Wrapped(
     val aadhaarNo: String,

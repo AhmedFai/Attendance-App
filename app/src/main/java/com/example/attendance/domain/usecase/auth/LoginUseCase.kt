@@ -1,4 +1,4 @@
-package com.example.attendance.domain.usecase
+package com.example.attendance.domain.usecase.auth
 
 import com.example.attendance.domain.model.login.LoginRequest
 import com.example.attendance.domain.repository.LoginRepository

@@ -1,4 +1,4 @@
-package com.example.attendance.presentation.login
+package com.example.attendance.presentation.login.preLogin
 
 import android.R.id.message
 import android.app.Activity
@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,19 +57,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.BuildConfig
 import com.example.attendance.R
 import com.example.attendance.domain.model.login.LoginRequest
+import com.example.attendance.presentation.login.postLogin.BootStrapViewModel
+import com.example.attendance.presentation.login.postLogin.BootstrapState
 import com.example.attendance.ui.theme.dimens
-import com.example.attendance.util.AppUtil
 import com.example.attendance.util.Constants
 import com.pehchaan.backend.service.AuthenticationActivity
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    bootStrapViewModel: BootStrapViewModel = hiltViewModel()
 ) {
 
     Log.e("SessionKyaHai?", viewModel.session?.isLoggedIn.toString())
@@ -78,11 +81,16 @@ fun LoginScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
     val state by viewModel.loginUiState.collectAsState()
+    val bootstrapState = bootStrapViewModel.state
+
     LaunchedEffect(Unit) {
         viewModel.loginUiEvent.collect{ event ->
             when(event){
                 is LoginUiEvent.ShowToast -> {
                     Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                }
+                is LoginUiEvent.StartBootStrap -> {
+                    bootStrapViewModel.startBootstrap()
                 }
                 else -> {}
             }
@@ -233,8 +241,6 @@ fun LoginScreen(
                         // login call
                         viewModel.onLogin(
                             loginRequest = LoginRequest(
-                                appVersion = "1.0",
-                                imeiNo = AppUtil.getAndroidId(context),
                                 loginId = viewModel.userId,
                                 password = viewModel.password
                             )
@@ -285,8 +291,6 @@ fun LoginScreen(
                     keyboardController?.hide()
                     viewModel.onLogin(
                         loginRequest = LoginRequest(
-                            appVersion = "1.0",
-                            imeiNo = AppUtil.getAndroidId(context),
                             loginId = viewModel.userId,
                             password = viewModel.password
                         )
@@ -318,9 +322,14 @@ fun LoginScreen(
         }
         when{
             state.isLoading -> {
-                LoginLoadingOverlay(
-                    color = viewModel.selectedDomain.primaryColor
-                )
+                val showLoader =
+                    state.isLoading || bootstrapState is BootstrapState.Loading
+
+                if (showLoader) {
+                    LoginLoadingOverlay(
+                        color = viewModel.selectedDomain.primaryColor
+                    )
+                }
             }
             state.error != null -> {
                 Log.d("LoginScreenError", "Error: ${state.error}")
@@ -329,6 +338,20 @@ fun LoginScreen(
                 Log.d("LoginScreenSuccess", "Data: ${state.data?.toString()}")
             }
 
+        }
+        when(bootstrapState){
+            is BootstrapState.Error -> {
+                Log.e("Bootstrap", "Error: ${bootstrapState.message}")
+            }
+            BootstrapState.Idle -> {
+
+            }
+            BootstrapState.Loading -> {
+
+            }
+            BootstrapState.Success -> {
+                Log.e("Bootstrap", "Success")
+            }
         }
     }
 }
@@ -365,7 +388,7 @@ fun LoginLoadingOverlay(
             .background(Color.Black.copy(alpha = 0.15f)), // subtle dim
         contentAlignment = Alignment.Center
     ) {
-        androidx.compose.material3.CircularProgressIndicator(
+        CircularProgressIndicator(
             color = color,
             strokeWidth = 3.dp,
             modifier = Modifier.size(36.dp)
