@@ -37,28 +37,49 @@ fun navGraph(
         }
 
         composable(Route.BatchListScreen.routeName) {
+            val facultyId = "FACULTY_LOGIN_ID"
             BatchListScreen(
                 onBack = { navController.popBackStack() },
-                onCandidateList = {
-                    navController.navigate(Route.CandidateListScreen.routeName)
+                onCandidateList = { batchId ->
+                    navController.navigate(Route.CandidateListScreen.withBatchId(batchId))
                 },
                 onMarkAttendance = {
-                    navController.navigate(Route.AttendanceScreen.routeName)
+                    navController.navigate(
+                        Route.AttendanceScreen.withArgs(
+                            userType = "FACULTY",
+                            userId = facultyId
+                        )
+                    )
                 }
             )
         }
 
-        composable(Route.CandidateListScreen.routeName) {
+        composable(route = "candidateListScreen/{batchId}") { backStackEntry ->
+            val batchId =
+                backStackEntry.arguments?.getString("batchId")?.toLong()
+                    ?: return@composable
             CandidateListScreen(
+                batchId,
                 onBack = { navController.popBackStack() },
-                onMarkAttendance = {
-                    navController.navigate(Route.AttendanceScreen.routeName)
+                onMarkAttendance = { candidateId ->
+                    navController.navigate(
+                        Route.AttendanceScreen.withArgs(
+                            userType = "CANDIDATE",
+                            userId = candidateId
+                        )
+                    )
                 }
             )
         }
 
-        composable(Route.AttendanceScreen.routeName) {
+        composable(route = "attendanceScreen/{userType}/{userId}") { backStackEntry->
+            val userType =
+                backStackEntry.arguments?.getString("userType") ?: return@composable
+            val userId =
+                backStackEntry.arguments?.getString("userId") ?: return@composable
             AttendanceScreen(
+                userType = userType,
+                userId = userId,
                 onBack = { navController.popBackStack() }
             )
         }

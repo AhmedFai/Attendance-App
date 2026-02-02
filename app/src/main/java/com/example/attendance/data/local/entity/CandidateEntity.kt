@@ -8,6 +8,7 @@ data class CandidateEntity(
     @PrimaryKey val candidateId: String,
     val batchId: Long,
     val candidateName: String,
+    val candidateEmail: String?,
     val rollNo: Int,
     val mobileNo: String?,
     val gender: String?,

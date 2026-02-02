@@ -32,8 +32,8 @@
     <string name="mark_attendance">Mark Attendance</string>
     <string name="sync_data">Total Sync Data</string>
     <string name="offline_data">Offline Data (0)</string>
-    <string name="get_register_embedings">Fetch Register Embeddings</string>
-    <string name="get_faculty_embedings">Get Faculty Embedings</string>
+    <string name="get_register_embeddings">Fetch Register Embeddings</string>
+    <string name="get_faculty_embeddings">Get Faculty Embeddings</string>
     <string name="sync_to_server">Sync To Server</string>
     <string name="loginId">Login Id</string>
     <string name="ddugky">DDUGKY</string>
@@ -49,4 +49,7 @@
     <string name="passwordRequired">Password required</string>
     <string name="unknownError">Unknown Error</string>
     <string name="noInternetConnection">No Internet Connection</string>
+    <string name="_new">New</string>
+    <string name="active">Active</string>
+    <string name="endingSoon">Ending Soon</string>
 </resources>

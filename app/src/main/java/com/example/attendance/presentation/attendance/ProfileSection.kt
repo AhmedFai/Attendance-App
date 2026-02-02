@@ -1,8 +1,6 @@
 package com.example.attendance.presentation.attendance
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +13,6 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,20 +22,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.attendance.R
-import com.example.attendance.domain.model.AttendanceType
-import com.example.attendance.domain.model.attendanceModel.CandidateUiModel
-import com.example.attendance.domain.model.attendanceModel.SelfUserUiModel
+import com.example.attendance.data.local.entity.CandidateEntity
+import com.example.attendance.data.local.entity.FacultyEntity
 import com.example.attendance.ui.theme.dimens
 
 @Composable
 fun ProfileSection(
-    type: AttendanceType,
-    candidate: CandidateUiModel?,
-    selfUser: SelfUserUiModel?
+    type: String,
+    candidate: CandidateEntity?,
+    faculty: FacultyEntity?
 ) {
 
     val dimens = MaterialTheme.dimens
@@ -62,10 +54,10 @@ fun ProfileSection(
 
             Text(
                 text =
-                    if (type == AttendanceType.CANDIDATE)
-                        candidate!!.name
+                    if (type == "CANDIDATE")
+                        candidate!!.candidateName
                     else
-                        selfUser!!.name,
+                        faculty!!.facultyName,
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -73,10 +65,10 @@ fun ProfileSection(
 
             Text(
                 text =
-                    if (type == AttendanceType.CANDIDATE)
-                        stringResource(R.string.roll_no) + " " + candidate!!.rollNo
+                    if (type == "CANDIDATE")
+                        stringResource(R.string.roll_no) + ": " + candidate!!.rollNo
                     else
-                        stringResource(R.string.loginId) + ": " + selfUser!!.loginId,
+                        stringResource(R.string.loginId) + ": " + faculty!!.loginId,
                 color = Color.Gray,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -85,8 +77,26 @@ fun ProfileSection(
 
     Spacer(Modifier.height(dimens.spaceS))
 
-    InfoRow(Icons.Default.Call, candidate?.contact ?: selfUser!!.contact)
-    InfoRow(Icons.Default.Email, candidate?.email ?: selfUser!!.email)
-    InfoRow(Icons.Default.People, candidate?.gender ?: selfUser!!.gender)
-    InfoRow(Icons.Default.DateRange, candidate?.dob ?: selfUser!!.dob)
+    val uiUser = when {
+        candidate != null -> AttendanceUserUi(
+            mobile = candidate.mobileNo ?: "-",
+            email = candidate.candidateEmail ?: "-",
+            gender = candidate.gender ?: "-",
+            dob = candidate.dateOfBirth ?: "-"
+        )
+
+        faculty != null -> AttendanceUserUi(
+            mobile = faculty.mobileNo ?: "-",
+            email = faculty.emailId ?: "-",
+            gender = faculty.gender ?: "-",
+            dob = faculty.dob ?: "-"
+        )
+
+        else -> null
+    }
+
+    InfoRow(Icons.Default.Call, uiUser?.mobile.toString())
+    InfoRow(Icons.Default.Email, uiUser?.email.toString())
+    InfoRow(Icons.Default.People, uiUser?.gender.toString())
+    InfoRow(Icons.Default.DateRange, uiUser?.dob.toString())
 }

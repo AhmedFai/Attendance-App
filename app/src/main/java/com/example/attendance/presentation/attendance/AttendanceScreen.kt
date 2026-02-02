@@ -17,31 +17,27 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.attendance.R
-import com.example.attendance.domain.model.AttendanceStatus
-import com.example.attendance.domain.model.AttendanceType
-import com.example.attendance.domain.model.DomainType
-import com.example.attendance.domain.model.attendanceModel.CandidateUiModel
-import com.example.attendance.domain.model.attendanceModel.SelfUserUiModel
 import com.example.attendance.presentation.common.Toolbar
 import com.example.attendance.ui.theme.dimens
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun AttendanceScreen(
-    viewModel: AttendanceViewModel = hiltViewModel(),
+    userType: String,
+    userId: String,
     onBack: () -> Unit
 ) {
-
+    val viewModel: AttendanceViewModel = hiltViewModel()
     val dimens = MaterialTheme.dimens
 
     val systemUiController = rememberSystemUiController()
+    val state = viewModel.uiState
 
     DisposableEffect(viewModel.domain) {
         systemUiController.setStatusBarColor(
@@ -52,6 +48,10 @@ fun AttendanceScreen(
         onDispose {
             // kuch nahi – next screen handle karega
         }
+    }
+
+    LaunchedEffect(userType, userId) {
+        viewModel.loadUser(userType, userId)
     }
 
     Column(
@@ -68,56 +68,66 @@ fun AttendanceScreen(
         // 🔹 TOOLBAR
         Toolbar(
             title =
-              //  if ("CANDIDATE" == AttendanceType.CANDIDATE)
-                    stringResource(R.string.mark_candidate_attendance),
-               // else
-                 //   stringResource(R.string.mark_self_attendance),
+                if (userType == "CANDIDATE")
+                    stringResource(R.string.mark_candidate_attendance)
+                else
+                    stringResource(R.string.mark_self_attendance),
             domain = viewModel.domain,
             onBack = onBack
         )
 
-        Spacer(Modifier.height(dimens.spaceM))
+        when{
+            state.isLoading -> {
+                //AttendanceShimmer()
+            }
+            state.error != null -> {
 
-        // 🔹 CARD
-        Card(
-            modifier = Modifier
-                .padding(horizontal = dimens.spaceM)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(dimens.radiusM),
-            elevation = CardDefaults.cardElevation(dimens.spaceXS),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            )
-        ) {
-
-            Column(modifier = Modifier.padding(dimens.spaceM)) {
-
-                // Profile
-                ProfileSection(
-                    type = AttendanceType.SELF,
-                    candidate = viewModel.candidate,
-                    selfUser = viewModel.selfUserUiModel
-                )
-
-                Divider(Modifier.padding(vertical = dimens.spaceM))
-
-                // Time
-                TimeSection()
-
+            }
+            else -> {
                 Spacer(Modifier.height(dimens.spaceM))
 
-                // Buttons
-                AttendanceButtons(
-                    domain = viewModel.domain,
-                    status = viewModel.attendanceStatus,
-                    onCheckIn = { viewModel.onCheckIn() },
-                    onCheckOut = { viewModel.onCheckOut() }
-                )
+                // 🔹 CARD
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = dimens.spaceM)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(dimens.radiusM),
+                    elevation = CardDefaults.cardElevation(dimens.spaceXS),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
 
-                Divider(Modifier.padding(vertical = dimens.spaceM))
+                    Column(modifier = Modifier.padding(dimens.spaceM)) {
 
-                // States
-                AttendanceStats()
+                        // Profile
+                        ProfileSection(
+                            type = userType,
+                            candidate = viewModel.uiState.candidate,
+                            faculty = viewModel.uiState.faculty
+                        )
+
+                        Divider(Modifier.padding(vertical = dimens.spaceM))
+
+                        // Time
+                        TimeSection()
+
+                        Spacer(Modifier.height(dimens.spaceM))
+
+                        // Buttons
+                        AttendanceButtons(
+                            domain = viewModel.domain,
+                            status = viewModel.attendanceStatus,
+                            onCheckIn = { viewModel.onCheckIn() },
+                            onCheckOut = { viewModel.onCheckOut() }
+                        )
+
+                        Divider(Modifier.padding(vertical = dimens.spaceM))
+
+                        // States
+                        AttendanceStats()
+                    }
+                }
             }
         }
     }

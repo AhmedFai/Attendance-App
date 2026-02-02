@@ -20,6 +20,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,18 +33,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.attendance.R
-import com.example.attendance.domain.model.CandidateListData
+import com.example.attendance.data.local.entity.CandidateEntity
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.dimens
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun CandidateItem(
-    candidate: CandidateListData,
+    candidate: CandidateEntity,
     domain: DomainType,
     onMarkAttendance: () -> Unit
 ) {
 
     val dimens = MaterialTheme.dimens
+    val dateFormatter = remember {
+        SimpleDateFormat("dd MMMM yyyy, EEEE", Locale.getDefault())
+    }
+    val currentDate = remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        while (true) {
+            val now = Date()
+            currentDate.value = dateFormatter.format(now)
+            delay(1000)
+        }
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -76,7 +94,7 @@ fun CandidateItem(
                             color = Color.Black
                         )
                         Text(
-                            text = candidate.name,
+                            text = candidate.candidateName,
                             style = MaterialTheme.typography.labelMedium,
                             color = Color.Gray
                         )
@@ -118,7 +136,7 @@ fun CandidateItem(
                     color = Color.Black
                 )
                 Text(
-                    text = candidate.contactNumber,
+                    text = candidate.mobileNo.toString(),
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.Gray
                 )
@@ -138,7 +156,7 @@ fun CandidateItem(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = "18 June 2025, Wednesday",
+                        text = currentDate.value,
                         style = MaterialTheme.typography.labelMedium
                     )
                 }

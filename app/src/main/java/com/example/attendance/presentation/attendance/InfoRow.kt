@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -48,7 +50,7 @@ fun InfoRow(
             color = Color.Gray
         )
 
-        if (showVerified) {
+        if (text != "-" && (icon == Icons.Default.Call || icon == Icons.Default.Email)) {
             Spacer(Modifier.width(dimens.spaceXS))
             Icon(
                 imageVector = Icons.Default.CheckCircle,

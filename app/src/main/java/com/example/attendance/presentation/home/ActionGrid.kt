@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
@@ -33,14 +34,14 @@ fun ActionGrid(
         ) {
             ActionCard(
                 modifier = Modifier.weight(1f),
-                title = "Mark Attendance",
+                title = stringResource(R.string.mark_attendance),
                 icon = R.drawable.ic_attendance,
                 color = domain.secondaryColor,
                 onClick = onMarkAttendance
             )
             ActionCard(
                 modifier = Modifier.weight(1f),
-                title = "Offline Data (0)",
+                title = stringResource(R.string.offline_data),
                 icon = R.drawable.ic_database,
                 color = domain.secondaryColor,
                 onClick = onOfflineData
@@ -53,14 +54,14 @@ fun ActionGrid(
         ) {
             ActionCard(
                 modifier = Modifier.weight(1f),
-                title = "Fetch Register\nEmbeddings",
+                title = stringResource(R.string.get_register_embeddings),
                 icon = R.drawable.ic_face,
                 color = domain.secondaryColor,
                 onClick = onFetchEmbeddings
             )
             ActionCard(
                 modifier = Modifier.weight(1f),
-                title = "Sync To Server",
+                title = stringResource(R.string.sync_to_server),
                 icon = R.drawable.ic_sync,
                 color = domain.secondaryColor,
                 onClick = onSync
@@ -68,7 +69,7 @@ fun ActionGrid(
         }
 
         ActionCardTotalSync(
-            title = "Total Sync Data",
+            title = stringResource(R.string.sync_data),
             icon = R.drawable.ic_total_sync,
             color = domain.primaryColor,
             onClick = onSync

@@ -8,6 +8,7 @@ fun Wrapped.toCandidateEntity(): CandidateEntity {
         candidateId = candidateId,
         batchId = batchId.toLong(),
         candidateName = candidateName,
+        candidateEmail = emailId,
         rollNo = rollNo,
         mobileNo = mobileNo,
         gender = gender,

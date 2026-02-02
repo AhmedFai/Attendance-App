@@ -7,10 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.domain.repository.NetworkChecker
+import com.example.attendance.domain.usecase.attendance.ClearAttendanceUseCase
 import com.example.attendance.domain.usecase.auth.GetLoginSessionUseCase
 import com.example.attendance.domain.usecase.auth.LogoutUseCase
+import com.example.attendance.domain.usecase.batch.ClearBatchUseCase
 import com.example.attendance.domain.usecase.candidate.CandidateMasterDataUseCase
+import com.example.attendance.domain.usecase.candidate.ClearCandidateUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
+import com.example.attendance.domain.usecase.faculty.ClearFacultyUseCase
 import com.example.attendance.domain.usecase.faculty.FacultyMasterDataUseCase
 import com.example.attendance.domain.usecase.faculty.GetFacultyProfileUseCase
 import com.example.attendance.presentation.common.UiEvent
@@ -26,7 +30,11 @@ class HomeViewModel @Inject constructor(
     getDomain: GetSelectedDomainUseCase,
     getSession: GetLoginSessionUseCase,
     private val clearSession: LogoutUseCase,
-    private val getFacultyProfileUseCase: GetFacultyProfileUseCase
+    private val getFacultyProfileUseCase: GetFacultyProfileUseCase,
+    private val clearCandidateUseCase: ClearCandidateUseCase,
+    private val clearBatchUseCase: ClearBatchUseCase,
+    private val clearAttendanceUseCase: ClearAttendanceUseCase,
+    private val clearFacultyUseCase: ClearFacultyUseCase
 ): ViewModel() {
 
     var uiState by mutableStateOf(HomeUiState())
@@ -69,7 +77,7 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true)
-            delay(4000)
+            delay(1000)
             val faculty = getFacultyProfileUseCase()
             if (faculty != null){
                 uiState = HomeUiState(
@@ -89,6 +97,10 @@ class HomeViewModel @Inject constructor(
             isLoggingOut = true
             delay(300)
             clearSession()
+            clearCandidateUseCase()
+            clearBatchUseCase()
+            clearAttendanceUseCase()
+            clearFacultyUseCase()
         }
     }
 

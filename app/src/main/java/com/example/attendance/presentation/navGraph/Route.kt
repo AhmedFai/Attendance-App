@@ -1,5 +1,6 @@
 package com.example.attendance.presentation.navGraph
 
+import com.google.android.gms.common.api.Batch
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
@@ -25,11 +26,19 @@ sealed interface Route {
     object CandidateListScreen : Route {
         override val routeName: String
             get() = "candidateListScreen"
+
+        fun withBatchId(batchId: Long): String{
+            return "$routeName/$batchId"
+        }
     }
 
     @Serializable
     object AttendanceScreen : Route {
         override val routeName: String
             get() = "attendanceScreen"
+
+        fun withArgs(userType: String,userId: String): String{
+            return "$routeName/$userType/$userId"
+        }
     }
 }

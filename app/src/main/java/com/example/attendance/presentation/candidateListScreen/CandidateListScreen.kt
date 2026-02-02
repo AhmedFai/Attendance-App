@@ -1,5 +1,6 @@
 package com.example.attendance.presentation.candidateListScreen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,21 +28,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.R
+import com.example.attendance.presentation.candidateListScreen.shimmer.CandidateListShimmer
 import com.example.attendance.presentation.common.Toolbar
 import com.example.attendance.ui.theme.dimens
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun CandidateListScreen(
-    viewModel: CandidateListViewModel = hiltViewModel(),
+    batchId: Long,
     onBack: () -> Unit,
-    onMarkAttendance: () -> Unit
+    onMarkAttendance: (String) -> Unit
 ) {
-
-
+    val viewModel: CandidateListViewModel = hiltViewModel()
     val domain = viewModel.domain
     val systemUiController = rememberSystemUiController()
-
+    val state = viewModel.uiState
     val dimens = MaterialTheme.dimens
 
     DisposableEffect(viewModel.domain) {
@@ -53,6 +54,10 @@ fun CandidateListScreen(
         onDispose {
             // kuch nahi – next screen handle karega
         }
+    }
+
+    LaunchedEffect(batchId) {
+        viewModel.loadCandidates(batchId)
     }
 
     Column(
@@ -72,20 +77,33 @@ fun CandidateListScreen(
             onBack = onBack
         )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(dimens.spaceM),
-            verticalArrangement = Arrangement.spacedBy(dimens.spaceS)
-        ) {
-            items(viewModel.candidates) { candidate ->
-                CandidateItem(
-                    candidate,
-                    domain,
-                    onMarkAttendance = {
-                        onMarkAttendance()
-                    }
-                )
+        when {
+            state.isLoading -> {
+                CandidateListShimmer()
             }
+
+            state.candidates.isEmpty() -> {
+                Log.e("CandidateListScreen", "CandidateListScreen: Empty")
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(dimens.spaceM),
+                    verticalArrangement = Arrangement.spacedBy(dimens.spaceS)
+                ) {
+                    items(viewModel.uiState.candidates) { candidate ->
+                        CandidateItem(
+                            candidate,
+                            domain,
+                            onMarkAttendance = {
+                                onMarkAttendance(candidate.candidateId)
+                            }
+                        )
+                    }
+                }
+            }
+
         }
     }
 }

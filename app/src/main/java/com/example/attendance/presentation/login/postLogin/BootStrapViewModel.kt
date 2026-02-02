@@ -81,7 +81,7 @@ class BootStrapViewModel @Inject constructor(
             is ApiState.Success -> {
                 Log.e("BootstrapVM", "Candidate API success")
 
-                val wrappedList = result.data?.wrappedList.orEmpty()
+                val wrappedList = result.data.wrappedList.orEmpty()
 
                 /* ---------------- BATCH INSERT ---------------- */
 
@@ -139,9 +139,8 @@ class BootStrapViewModel @Inject constructor(
                 Log.e("BootstrapVM", "Faculty API success")
 
                 val faculties = result.data
-                    ?.wrappedList
-                    ?.map { it.toBatchEntity() }
-                    .orEmpty()
+                    .wrappedList
+                    .map { it.toBatchEntity() }
 
                 Log.e(
                     "BootstrapVM",
