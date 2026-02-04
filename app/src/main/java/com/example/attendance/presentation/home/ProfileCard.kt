@@ -35,6 +35,7 @@ fun ProfileCard(
     domain: DomainType,
     userName: String,
     email: String,
+    gender: String,
     onLogout: () -> Unit
 ) {
 
@@ -55,7 +56,11 @@ fun ProfileCard(
         ) {
 
             Image(
-                painter = painterResource(R.drawable.ic_profile),
+                painter = if (gender == "M"){
+                    painterResource(R.drawable.ic_profile)
+                }else{
+                    painterResource(R.drawable.ic_profile_female)
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .size(dimens.avatarM)

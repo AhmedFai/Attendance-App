@@ -4,10 +4,12 @@ import com.example.attendance.data.repository.AttendanceRepositoryImpl
 import com.example.attendance.data.repository.BatchRepositoryImpl
 import com.example.attendance.data.repository.CandidateRepositoryImpl
 import com.example.attendance.data.repository.FacultyRepositoryImpl
+import com.example.attendance.data.repository.SyncAttendanceRepositoryImpl
 import com.example.attendance.domain.repository.AttendanceRepository
 import com.example.attendance.domain.repository.BatchRepository
 import com.example.attendance.domain.repository.CandidateRepository
 import com.example.attendance.domain.repository.FacultyRepository
+import com.example.attendance.domain.repository.SyncAttendanceRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -42,4 +44,9 @@ abstract class RepositoryModule {
         impl: AttendanceRepositoryImpl
     ): AttendanceRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindSyncAttendanceRepository(
+        impl: SyncAttendanceRepositoryImpl
+    ): SyncAttendanceRepository
 }

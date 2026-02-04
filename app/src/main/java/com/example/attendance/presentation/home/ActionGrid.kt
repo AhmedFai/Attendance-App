@@ -16,10 +16,13 @@ import com.example.attendance.ui.theme.dimens
 @Composable
 fun ActionGrid(
     domain: DomainType,
+    pendingCount: Int,
+    syncedCount: Int,
     onMarkAttendance: () -> Unit,
     onOfflineData: () -> Unit,
     onFetchEmbeddings: () -> Unit,
-    onSync: () -> Unit
+    onSync: () -> Unit,
+    onTotalSync: () -> Unit
 ) {
 
     val dimens = MaterialTheme.dimens
@@ -41,7 +44,7 @@ fun ActionGrid(
             )
             ActionCard(
                 modifier = Modifier.weight(1f),
-                title = stringResource(R.string.offline_data),
+                title = stringResource(R.string.offline_data) + " ($pendingCount)",
                 icon = R.drawable.ic_database,
                 color = domain.secondaryColor,
                 onClick = onOfflineData
@@ -69,10 +72,10 @@ fun ActionGrid(
         }
 
         ActionCardTotalSync(
-            title = stringResource(R.string.sync_data),
+            title = stringResource(R.string.sync_data) + " ($syncedCount)",
             icon = R.drawable.ic_total_sync,
             color = domain.primaryColor,
-            onClick = onSync
+            onClick = onTotalSync
         )
 
     }

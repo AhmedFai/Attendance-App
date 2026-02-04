@@ -1,5 +1,6 @@
 package com.example.attendance.presentation.login.preLogin
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,12 +10,14 @@ import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.domain.model.UserSession
 import com.example.attendance.domain.model.login.LoginRequest
+import com.example.attendance.domain.model.updateRegisteredFace.UpdateRegisteredFaceRequest
 import com.example.attendance.domain.repository.NetworkChecker
 import com.example.attendance.domain.usecase.auth.LoginUseCase
 import com.example.attendance.domain.usecase.auth.GetLoginSessionUseCase
 import com.example.attendance.domain.usecase.auth.SaveLoginSessionUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
 import com.example.attendance.domain.usecase.domain.SaveDomainUseCase
+import com.example.attendance.domain.usecase.updateRegisteredFace.UpdateRegisteredFaceUseCase
 import com.example.attendance.util.ApiState
 import com.example.attendance.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +36,8 @@ class LoginViewModel @Inject constructor(
     getSession: GetLoginSessionUseCase,
     private val saveSession: SaveLoginSessionUseCase,
     private val loginUseCase: LoginUseCase,
-    private val networkChecker: NetworkChecker
+    private val networkChecker: NetworkChecker,
+    private val updateRegisteredFaceUseCase: UpdateRegisteredFaceUseCase
 ) : ViewModel() {
 
     private val _loginUiState = MutableStateFlow(LoginUiState())
@@ -131,10 +135,54 @@ class LoginViewModel @Inject constructor(
                             data = state.data,
                             //isLoading = false
                         )
+//                        _loginUiEvent.emit(
+//                            LoginUiEvent.ShowToast(UiText.StringRes(R.string.loginSuccess))
+//                        )
+                        saveSession(userId, state.data.accessToken)
+                        if (state.data.faceRegistered == "N") {
+                            _loginUiEvent.emit(LoginUiEvent.StartFaceSdk)
+                        } else {
+                            _loginUiEvent.emit(LoginUiEvent.StartBootStrap)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun onFaceSdkSuccess(updateRegisteredFaceRequest: UpdateRegisteredFaceRequest) {
+        viewModelScope.launch {
+            if (!networkChecker.isConnected()){
+                _loginUiEvent.emit(
+                    LoginUiEvent.ShowToast(UiText.StringRes(R.string.noInternetConnection))
+                )
+                return@launch
+            }
+            updateRegisteredFaceUseCase(updateRegisteredFaceRequest).collect { state ->
+                when(state){
+                    is ApiState.Error<*> -> {
+                        Log.e("FaceUpdateApi", "Face update api error")
                         _loginUiEvent.emit(
-                            LoginUiEvent.ShowToast(UiText.StringRes(R.string.loginSuccess))
+                            LoginUiEvent.ShowToast(
+                                UiText.Dynamic(state.message)
+                            )
                         )
-                        saveSession(UserSession(userId, state.data.accessToken, false))
+                    }
+                    is ApiState.Exception<*> -> {
+                        Log.e("FaceUpdateApi", "Face update api exception")
+                        _loginUiEvent.emit(
+                            LoginUiEvent.ShowToast(
+                                UiText.Dynamic(
+                                    state.exception.message ?: "Face update failed"
+                                )
+                            )
+                        )
+                    }
+                    is ApiState.Loading -> {
+                        Log.e("FaceUpdateApi", "Face update api loading")
+                    }
+                    is ApiState.Success<*> -> {
+                        Log.e("FaceUpdateApi", "Face update api success")
                         _loginUiEvent.emit(LoginUiEvent.StartBootStrap)
                     }
                 }

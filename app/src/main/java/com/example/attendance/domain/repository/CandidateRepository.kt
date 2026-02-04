@@ -7,6 +7,8 @@ interface CandidateRepository {
 
     suspend fun insertCandidates(candidates: List<CandidateEntity>)
 
+    suspend fun getAllCandidates(): List<CandidateEntity>
+
     fun getCandidatesByBatch(batchId: Long): Flow<List<CandidateEntity>>
 
     suspend fun getCandidateById(candidateId: String): CandidateEntity?

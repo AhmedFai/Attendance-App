@@ -19,12 +19,14 @@ import com.example.attendance.data.repository.CandidateMasterDataRepositoryImpl
 import com.example.attendance.data.repository.DomainRepositoryImpl
 import com.example.attendance.data.repository.FacultyMasterDataRepositoryImpl
 import com.example.attendance.data.repository.LoginRepositoryImpl
+import com.example.attendance.data.repository.UpdateRegisteredFaceRepositoryImpl
 import com.example.attendance.domain.repository.AuthRepository
 import com.example.attendance.domain.repository.CandidateMasterDataRepository
 import com.example.attendance.domain.repository.DomainRepository
 import com.example.attendance.domain.repository.FacultyMasterDataRepository
 import com.example.attendance.domain.repository.LoginRepository
 import com.example.attendance.domain.repository.NetworkChecker
+import com.example.attendance.domain.repository.UpdateRegisteredFaceRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -144,6 +146,14 @@ object AppModule {
         prefs: AppPreferences
     ): FacultyMasterDataRepository =
         FacultyMasterDataRepositoryImpl(api,prefs)
+
+    @Provides
+    @Singleton
+    fun provideUpdateFaceRegisteredApiRepository(
+        api: ApiServices,
+        prefs: AppPreferences
+    ): UpdateRegisteredFaceRepository =
+        UpdateRegisteredFaceRepositoryImpl(api, prefs)
 
 
     // Room Database

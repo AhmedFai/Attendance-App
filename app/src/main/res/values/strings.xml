@@ -31,7 +31,7 @@
     <string name="ok">Ok</string>
     <string name="mark_attendance">Mark Attendance</string>
     <string name="sync_data">Total Sync Data</string>
-    <string name="offline_data">Offline Data (0)</string>
+    <string name="offline_data">Offline Data</string>
     <string name="get_register_embeddings">Fetch Register Embeddings</string>
     <string name="get_faculty_embeddings">Get Faculty Embeddings</string>
     <string name="sync_to_server">Sync To Server</string>
@@ -52,4 +52,8 @@
     <string name="_new">New</string>
     <string name="active">Active</string>
     <string name="endingSoon">Ending Soon</string>
+    <string name="pendingAttendance">No pending attendance to sync.</string>
+    <string name="syncedSuccessfully">Attendance synced successfully.</string>
+    <string name="syncRequired">Data Sync required before logout.</string>
+    <string name="netRequired">Internet must required before logout. Please connect with internet.</string>
 </resources>

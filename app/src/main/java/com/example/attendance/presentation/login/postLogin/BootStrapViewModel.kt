@@ -10,6 +10,7 @@ import com.example.attendance.data.mapper.toBatchEntity
 import com.example.attendance.data.mapper.toCandidateEntity
 import com.example.attendance.domain.repository.NetworkChecker
 import com.example.attendance.domain.usecase.auth.GetLoginSessionUseCase
+import com.example.attendance.domain.usecase.auth.MarkLoggedInUseCase
 import com.example.attendance.domain.usecase.auth.SaveLoginSessionUseCase
 import com.example.attendance.domain.usecase.batch.InsertBatchesUseCase
 import com.example.attendance.domain.usecase.candidate.CandidateMasterDataUseCase
@@ -34,7 +35,8 @@ class BootStrapViewModel @Inject constructor(
     private val insertFacultiesUseCase: InsertFacultiesUseCase,
     private val insertCandidatesUseCase: InsertCandidatesUseCase,
     private val getSessionUseCase: GetLoginSessionUseCase,
-    private val saveSessionUseCase: SaveLoginSessionUseCase
+    private val saveSessionUseCase: SaveLoginSessionUseCase,
+    private val markLoggedInUseCase: MarkLoggedInUseCase,
 ) : ViewModel(){
 
     var state by mutableStateOf<BootstrapState>(BootstrapState.Idle)
@@ -61,7 +63,7 @@ class BootStrapViewModel @Inject constructor(
                     candidateJob.await()
                     facultyJob.await()
                 }
-                markBootstrapCompleted()
+                markLoggedInUseCase()
                 state = BootstrapState.Success
             }catch (e : Exception){
                 state = BootstrapState.Error(UiText.Dynamic(e.message.toString()))
@@ -167,16 +169,16 @@ class BootStrapViewModel @Inject constructor(
         }
     }
 
-    private suspend fun markBootstrapCompleted() {
-
-        val currentSession = getSessionUseCase().first()
-            ?: return   // safety
-
-        saveSessionUseCase(
-            currentSession.copy(
-                isLoggedIn = true   // 👈 NOW APP IS READY
-            )
-        )
-    }
+//    private suspend fun markBootstrapCompleted() {
+//
+//        val currentSession = getSessionUseCase().first()
+//            ?: return   // safety
+//
+//        saveSessionUseCase(
+//            currentSession.copy(
+//                isLoggedIn = true   // 👈 NOW APP IS READY
+//            )
+//        )
+//    }
 
 }

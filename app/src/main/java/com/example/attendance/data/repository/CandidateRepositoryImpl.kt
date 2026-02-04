@@ -13,6 +13,10 @@ class CandidateRepositoryImpl @Inject constructor(
         candidateDao.insertCandidate(candidates)
     }
 
+    override suspend fun getAllCandidates(): List<CandidateEntity> {
+        return candidateDao.getAllCandidate()
+    }
+
     override fun getCandidatesByBatch(batchId: Long): Flow<List<CandidateEntity>> {
         return candidateDao.getCandidateByBatch(batchId)
     }

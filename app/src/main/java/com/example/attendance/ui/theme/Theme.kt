@@ -14,7 +14,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import com.example.attendance.MainActivity
+import com.example.attendance.presentation.main.MainActivity
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

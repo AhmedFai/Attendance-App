@@ -61,6 +61,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.BuildConfig
 import com.example.attendance.R
 import com.example.attendance.domain.model.login.LoginRequest
+import com.example.attendance.domain.model.updateRegisteredFace.UpdateRegisteredFaceRequest
 import com.example.attendance.presentation.login.postLogin.BootStrapViewModel
 import com.example.attendance.presentation.login.postLogin.BootstrapState
 import com.example.attendance.ui.theme.dimens
@@ -82,20 +83,10 @@ fun LoginScreen(
     val context = LocalContext.current
     val state by viewModel.loginUiState.collectAsState()
     val bootstrapState = bootStrapViewModel.state
-
-    LaunchedEffect(Unit) {
-        viewModel.loginUiEvent.collect{ event ->
-            when(event){
-                is LoginUiEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-                }
-                is LoginUiEvent.StartBootStrap -> {
-                    bootStrapViewModel.startBootstrap()
-                }
-                else -> {}
-            }
-        }
-    }
+    val domain = viewModel.selectedDomain
+    val password = viewModel.password
+    val passwordVisible = viewModel.passwordVisible
+    val dimens = MaterialTheme.dimens
 
     // 🔹 Activity Result Launcher (Compose way)
     val startForAuthentication =
@@ -114,14 +105,25 @@ fun LoginScreen(
                     Toast
                         .makeText(context, "✅ Success: $message", Toast.LENGTH_SHORT)
                         .show()
-
-//                    // 👇 Same logic jo fragment me tha
-//                    viewModel.onFaceAuthSuccess()
-
+                    viewModel.onFaceSdkSuccess(
+                        UpdateRegisteredFaceRequest(
+                            isFaceRegistered = "Y"
+                        )
+                    )
                 } else {
-                    Toast
-                        .makeText(context, "✅ Failure: $message", Toast.LENGTH_SHORT)
-                        .show()
+
+                    Log.e("WhatInIt", message)
+                    if (message == "User ID already exists on server! Please use a different ID."){
+                        viewModel.onFaceSdkSuccess(
+                            UpdateRegisteredFaceRequest(
+                                isFaceRegistered = "Y"
+                            )
+                        )
+                    }else{
+                        Toast
+                            .makeText(context, "✅ Failure: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             } else {
                 Toast
@@ -130,11 +132,37 @@ fun LoginScreen(
             }
         }
 
+    LaunchedEffect(Unit) {
+        viewModel.loginUiEvent.collect{ event ->
+            when(event){
+                is LoginUiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                }
+                is LoginUiEvent.StartBootStrap -> {
+                    bootStrapViewModel.startBootstrap()
+                }
 
-    val domain = viewModel.selectedDomain
-    val password = viewModel.password
-    val passwordVisible = viewModel.passwordVisible
-    val dimens = MaterialTheme.dimens
+                LoginUiEvent.StartFaceSdk -> {
+                    startAuthentication(
+                        context = context,
+                        launcher = startForAuthentication,
+                        callType = Constants.CALL_TYPE_REGISTRATION,
+                        userId = state.data!!.loginId,
+                        userName = state.data!!.userName
+                    )
+//                    Log.e("FaceUpdateApi", "Face update api called")
+//                    viewModel.onFaceSdkSuccess(
+//                        UpdateRegisteredFaceRequest(
+//                            isFaceRegistered = "Y"
+//                        )
+//                    )
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -295,15 +323,6 @@ fun LoginScreen(
                             password = viewModel.password
                         )
                     )
-
-//                    startAuthentication(
-//                        context = context,
-//                        launcher = startForAuthentication,
-//                        callType = Constants.CALL_TYPE_REGISTRATION,
-//                        userId = "DSHEKAR",
-//                        userName = "Dereddy Shekar Reddy"
-//                    )
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()

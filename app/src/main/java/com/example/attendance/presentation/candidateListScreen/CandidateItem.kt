@@ -76,7 +76,11 @@ fun CandidateItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Image(
-                    painter = painterResource(R.drawable.ic_profile),
+                    painter = if (candidate.gender == "M"){
+                        painterResource(R.drawable.ic_profile)
+                    }else{
+                        painterResource(R.drawable.ic_profile_female)
+                    },
                     contentDescription = null,
                     modifier = Modifier
                         .size(dimens.avatarS)

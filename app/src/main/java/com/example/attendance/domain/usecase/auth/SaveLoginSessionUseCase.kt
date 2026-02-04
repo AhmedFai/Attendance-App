@@ -7,6 +7,6 @@ import javax.inject.Inject
 class SaveLoginSessionUseCase @Inject constructor(
     private val repo: AuthRepository
 ) {
-    suspend operator fun invoke(session: UserSession) =
-        repo.saveSession(session)
+    suspend operator fun invoke(userId: String, token: String) =
+        repo.saveSession(userId, token)
 }

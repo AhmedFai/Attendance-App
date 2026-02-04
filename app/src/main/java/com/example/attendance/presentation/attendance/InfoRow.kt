@@ -45,7 +45,7 @@ fun InfoRow(
         Spacer(Modifier.width(dimens.spaceXS))
 
         Text(
-            text,
+            text = if (text == "F") "Female" else if (text == "M") "Male" else text,
             style = MaterialTheme.typography.titleMedium,
             color = Color.Gray
         )

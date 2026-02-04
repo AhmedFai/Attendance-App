@@ -55,10 +55,16 @@ class AppPreferences(
             )
         }
 
-    suspend fun saveSession(session: UserSession) {
+    suspend fun saveSession(userId: String, token: String) {
         context.dataStore.edit {
-            it[Keys.USER_ID] = session.userId
-            it[Keys.TOKEN] = session.token
+            it[Keys.USER_ID] = userId
+            it[Keys.TOKEN] = token
+            //it[Keys.LOGGED_IN] = true
+        }
+    }
+
+    suspend fun markLoggedIn() {
+        context.dataStore.edit {
             it[Keys.LOGGED_IN] = true
         }
     }
