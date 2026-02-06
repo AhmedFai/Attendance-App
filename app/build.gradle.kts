@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation("androidx.hilt:hilt-work:1.1.0")
 
     //Retrofit
     implementation(libs.retrofit)
@@ -148,5 +149,9 @@ dependencies {
 
     // MediaPipe Tasks Vision
     implementation("com.google.mediapipe:tasks-vision:0.10.28")
+
+    // Google / Material Design
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }

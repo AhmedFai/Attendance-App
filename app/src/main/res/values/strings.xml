@@ -29,6 +29,7 @@
     <string name="name1">Name</string>
     <string name="careof">CareOf:</string>
     <string name="ok">Ok</string>
+    <string name="done">Done</string>
     <string name="mark_attendance">Mark Attendance</string>
     <string name="sync_data">Total Sync Data</string>
     <string name="offline_data">Offline Data</string>
@@ -56,4 +57,10 @@
     <string name="syncedSuccessfully">Attendance synced successfully.</string>
     <string name="syncRequired">Data Sync required before logout.</string>
     <string name="netRequired">Internet must required before logout. Please connect with internet.</string>
+    <string name="locationDenied">Location permission denied.</string>
+    <string name="gpsRequired">GPS Required.</string>
+    <string name="failedLocation">Failed to retrieve location. Please allow location permission.</string>
+    <string name="outsideRange">You are outside facility range.</string>
+    <string name="checkInSuccess">Check-In Successful.</string>
+    <string name="checkOutSuccess">Check-Out Successful.</string>
 </resources>

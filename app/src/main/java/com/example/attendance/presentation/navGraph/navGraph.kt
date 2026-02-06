@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.navGraph
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.attendance.presentation.attendance.AttendanceScreen
@@ -8,12 +9,14 @@ import com.example.attendance.presentation.batchListScreen.BatchListScreen
 import com.example.attendance.presentation.candidateListScreen.CandidateListScreen
 import com.example.attendance.presentation.home.HomeScreen
 import com.example.attendance.presentation.login.preLogin.LoginScreen
+import com.example.attendance.presentation.login.preLogin.LoginViewModel
 
 @Composable
 fun navGraph(
     startDestination: String
 ) {
     val navController = rememberAppNavController()
+    val loginViewModel: LoginViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -37,17 +40,18 @@ fun navGraph(
         }
 
         composable(Route.BatchListScreen.routeName) {
-            val facultyId = "FACULTY_LOGIN_ID"
+            val facultyId = loginViewModel.session?.userId
             BatchListScreen(
                 onBack = { navController.popBackStack() },
                 onCandidateList = { batchId ->
                     navController.navigate(Route.CandidateListScreen.withBatchId(batchId))
                 },
-                onMarkAttendance = {
+                onMarkAttendance = { batchId->
                     navController.navigate(
                         Route.AttendanceScreen.withArgs(
                             userType = "FACULTY",
-                            userId = facultyId
+                            userId = facultyId!!,
+                            batchId = batchId
                         )
                     )
                 }
@@ -65,21 +69,25 @@ fun navGraph(
                     navController.navigate(
                         Route.AttendanceScreen.withArgs(
                             userType = "CANDIDATE",
-                            userId = candidateId
+                            userId = candidateId,
+                            batchId = batchId
                         )
                     )
                 }
             )
         }
 
-        composable(route = "attendanceScreen/{userType}/{userId}") { backStackEntry->
+        composable(route = "attendanceScreen/{userType}/{userId}/{batchId}") { backStackEntry->
             val userType =
                 backStackEntry.arguments?.getString("userType") ?: return@composable
             val userId =
                 backStackEntry.arguments?.getString("userId") ?: return@composable
+            val batchId =
+                backStackEntry.arguments?.getString("batchId")?.toLong() ?: return@composable
             AttendanceScreen(
                 userType = userType,
                 userId = userId,
+                batchId = batchId,
                 onBack = { navController.popBackStack() }
             )
         }

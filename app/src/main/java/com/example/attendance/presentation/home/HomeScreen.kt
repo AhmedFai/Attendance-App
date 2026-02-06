@@ -35,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.presentation.home.shimmer.HomeShimmer
@@ -85,7 +87,15 @@ fun HomeScreen(
             }
         }
     }
+    val lifecycleOwner = LocalLifecycleOwner.current
 
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(
+            androidx.lifecycle.Lifecycle.State.RESUMED
+        ) {
+            viewModel.refreshCounts()
+        }
+    }
     AnimatedVisibility(
         visible = !isLoggingOut,
         exit = fadeOut() + scaleOut()

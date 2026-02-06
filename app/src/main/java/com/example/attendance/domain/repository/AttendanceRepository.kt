@@ -11,6 +11,7 @@ interface AttendanceRepository {
     suspend fun isCheckedInToday(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): Boolean
 
@@ -18,6 +19,7 @@ interface AttendanceRepository {
     suspend fun isCheckedOutToday(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): Boolean
 
@@ -25,12 +27,14 @@ interface AttendanceRepository {
     suspend fun getCheckInTime(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): String?
 
     suspend fun getCheckOutTime(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): String?
 
@@ -38,6 +42,7 @@ interface AttendanceRepository {
     suspend fun markCheckOut(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String,
         checkOut: String,
         totalHours: String

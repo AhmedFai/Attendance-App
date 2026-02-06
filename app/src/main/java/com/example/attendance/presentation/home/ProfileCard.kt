@@ -69,7 +69,11 @@ fun ProfileCard(
 
             Spacer(Modifier.width(dimens.spaceM))
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .weight(1f)
+            ) {
                 Text(
                     text = userName,
                     style = MaterialTheme.typography.titleLarge

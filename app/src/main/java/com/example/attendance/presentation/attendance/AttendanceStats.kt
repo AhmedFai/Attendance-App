@@ -16,14 +16,18 @@ import androidx.compose.ui.unit.sp
 import com.example.attendance.R
 
 @Composable
-fun AttendanceStats() {
+fun AttendanceStats(
+    checkIn: String?,
+    checkOut: String?,
+    total: String
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        StatItem("00:00:00", stringResource(R.string.check_in))
-        StatItem("00:00:00", stringResource(R.string.check_out))
-        StatItem("00:00hrs", stringResource(R.string.total_hours))
+        StatItem(checkIn ?: "00:00:00", stringResource(R.string.check_in))
+        StatItem(checkOut ?: "00:00:00", stringResource(R.string.check_out))
+        StatItem(total, stringResource(R.string.total_hours))
     }
 }
 

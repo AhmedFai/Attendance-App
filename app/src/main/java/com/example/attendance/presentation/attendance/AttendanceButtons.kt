@@ -15,31 +15,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.attendance.R
-import com.example.attendance.domain.model.AttendanceStatus
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.dimens
 
 @Composable
 fun AttendanceButtons(
     domain: DomainType,
-    status: AttendanceStatus,
+    canCheckIn: Boolean,
+    canCheckOut: Boolean,
     onCheckIn: () -> Unit,
     onCheckOut: () -> Unit
 ) {
 
     val dimens = MaterialTheme.dimens
 
-    val isCheckedIn = status == AttendanceStatus.CHECKED_IN
-    val isCheckedOut = status == AttendanceStatus.CHECKED_OUT
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(dimens.spaceS)
     ) {
 
-        if (isCheckedIn || status == AttendanceStatus.NONE) {
+        if (canCheckIn) {
             Button(
                 onClick = onCheckIn,
+                enabled = true,
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.buttonColors(domain.primaryColor),
                 shape = RoundedCornerShape(dimens.radiusM)
@@ -52,6 +50,7 @@ fun AttendanceButtons(
         } else {
             OutlinedButton(
                 onClick = onCheckIn,
+                enabled = false,
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(dimens.radiusM),
                 border = BorderStroke(1.dp, domain.primaryColor)
@@ -64,9 +63,10 @@ fun AttendanceButtons(
             }
         }
 
-        if (isCheckedOut) {
+        if (canCheckOut) {
             Button(
                 onClick = onCheckOut,
+                enabled = true,
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.buttonColors(domain.primaryColor),
                 shape = RoundedCornerShape(dimens.radiusM)
@@ -79,6 +79,7 @@ fun AttendanceButtons(
         } else {
             OutlinedButton(
                 onClick = onCheckOut,
+                enabled = true,
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(dimens.radiusM),
                 border = BorderStroke(1.dp, domain.primaryColor)

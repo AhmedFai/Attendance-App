@@ -15,38 +15,43 @@ class AttendanceRepositoryImpl @Inject constructor(
     override suspend fun isCheckedInToday(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): Boolean {
-        return attendanceDao.isCheckedInToday(userId, userType, date)
+        return attendanceDao.isCheckedInToday(userId, userType, batchId, date)
     }
 
     override suspend fun isCheckedOutToday(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): Boolean {
-        return attendanceDao.isCheckedOutToday(userId, userType, date)
+        return attendanceDao.isCheckedOutToday(userId, userType, batchId, date)
     }
 
     override suspend fun getCheckInTime(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): String? {
-        return attendanceDao.getCheckInTime(userId, userType, date)
+        return attendanceDao.getCheckInTime(userId, userType, batchId, date)
     }
 
     override suspend fun getCheckOutTime(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String
     ): String? {
-        return attendanceDao.getCheckOutTime(userId, userType, date)
+        return attendanceDao.getCheckOutTime(userId, userType, batchId, date)
     }
 
     override suspend fun markCheckOut(
         userId: String,
         userType: String,
+        batchId: Long,
         date: String,
         checkOut: String,
         totalHours: String
@@ -54,6 +59,7 @@ class AttendanceRepositoryImpl @Inject constructor(
         attendanceDao.updateCheckOut(
             userId = userId,
             userType = userType,
+            batchId = batchId,
             date = date,
             checkOut = checkOut,
             totalHours = totalHours,

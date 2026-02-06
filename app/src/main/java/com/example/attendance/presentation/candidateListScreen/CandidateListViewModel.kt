@@ -25,12 +25,6 @@ class CandidateListViewModel @Inject constructor(
     var domain by mutableStateOf(DomainType.RSETI)
         private set
 
-//    val candidates = listOf(
-//        CandidateListData("Walvinder Singh", 1, "9231949074"),
-//        CandidateListData("Tabish Jamal", 2, "9524163521"),
-//        CandidateListData("Faizan Ahmed", 3, "9999999999")
-//    )
-
     init {
         viewModelScope.launch {
             getDomain().collect { domain = it }
@@ -41,7 +35,7 @@ class CandidateListViewModel @Inject constructor(
         if (uiState.hasLoadedOnce) return
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true)
-            delay(3000)
+            delay(1000)
             getCandidatesByBatchUseCase(batchId).collect { candidates ->
                 uiState = uiState.copy(
                     isLoading = false,

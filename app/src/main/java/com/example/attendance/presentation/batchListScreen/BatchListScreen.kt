@@ -35,7 +35,7 @@ fun BatchListScreen(
     viewModel: BatchListViewModel = hiltViewModel(),
     onBack: () -> Unit,
     onCandidateList: (Long) -> Unit,
-    onMarkAttendance: () -> Unit
+    onMarkAttendance: (Long) -> Unit
 ) {
     var showAttendanceSheet by remember { mutableStateOf(false) }
     val systemUiController = rememberSystemUiController()
@@ -116,7 +116,7 @@ fun BatchListScreen(
                 showAttendanceSheet = false
                 selectedScreen = "selfAttendance"
                 // navigate to self attendance screen
-                onMarkAttendance()
+                onMarkAttendance(selectedBatchId!!)
                 selectedBatchId = null
             }
         )

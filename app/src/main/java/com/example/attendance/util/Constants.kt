@@ -32,5 +32,6 @@ object Constants {
     const val CALL_TYPE_REGISTRATION = "REGISTRATION"
     const val EXTRA_FETCH_USER_EMBEDDING = "fetch_user_embeddings"
     const val EXTRA_USER_IDS = "user_ids_json"
+    const val CALL_TYPE_LOGIN = "LOGIN"
 
 }

@@ -433,7 +433,7 @@ fun startAuthentication(
         )
         putExtra(
             Constants.EXTRA_USER_ID,
-            userId
+            "FAIFAI"
         )
 
         if (callType == Constants.CALL_TYPE_REGISTRATION) {

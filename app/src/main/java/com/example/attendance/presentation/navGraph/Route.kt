@@ -37,8 +37,8 @@ sealed interface Route {
         override val routeName: String
             get() = "attendanceScreen"
 
-        fun withArgs(userType: String,userId: String): String{
-            return "$routeName/$userType/$userId"
+        fun withArgs(userType: String,userId: String, batchId: Long): String{
+            return "$routeName/$userType/$userId/$batchId"
         }
     }
 }
