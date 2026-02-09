@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,6 +13,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -49,6 +51,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import com.pehchaan.backend.service.AuthenticationActivity
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AttendanceScreen(
     userType: String,
@@ -199,7 +202,8 @@ fun AttendanceScreen(
                         ProfileSection(
                             type = userType,
                             candidate = viewModel.uiState.candidate,
-                            faculty = viewModel.uiState.faculty
+                            faculty = viewModel.uiState.faculty,
+                            domain = viewModel.domain
                         )
 
                         Divider(Modifier.padding(vertical = dimens.spaceM))
@@ -288,6 +292,7 @@ private fun startAuthentication(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun handleAuthenticationResult(
     result: ActivityResult,
     context: Context,

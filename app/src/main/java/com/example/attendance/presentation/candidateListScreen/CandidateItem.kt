@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.candidateListScreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -77,7 +78,7 @@ fun CandidateItem(
 
                 Image(
                     painter = if (candidate.gender == "M"){
-                        painterResource(R.drawable.ic_profile)
+                        painterResource(R.drawable.ic_profile_male)
                     }else{
                         painterResource(R.drawable.ic_profile_female)
                     },
@@ -85,6 +86,7 @@ fun CandidateItem(
                     modifier = Modifier
                         .size(dimens.avatarS)
                         .clip(CircleShape)
+                        .background(domain.primaryColor)
                 )
 
                 Spacer(Modifier.width(dimens.spaceS))

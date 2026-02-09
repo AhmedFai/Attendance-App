@@ -56,14 +56,14 @@ fun AttendanceOptionBottomSheet(
 
             AttendanceOptionItem(
                 title = stringResource(R.string.mark_candidate_attendance),
-                icon = R.drawable.ic_profile,
+                icon = R.drawable.candidate,
                 color = domain.primaryColor,
                 onClick = onCandidateAttendance
             )
 
             AttendanceOptionItem(
                 title = stringResource(R.string.mark_self_attendance),
-                icon = R.drawable.ic_profile,
+                icon = R.drawable.faculty,
                 color = domain.primaryColor,
                 onClick = onSelfAttendance
             )

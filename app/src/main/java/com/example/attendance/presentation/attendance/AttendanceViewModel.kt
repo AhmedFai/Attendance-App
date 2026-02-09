@@ -1,6 +1,8 @@
 package com.example.attendance.presentation.attendance
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -49,6 +51,7 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadUser(userType: String, userId: String, batchId: Long){
         Log.e("USER", "USER_ID: $userId, USER_TYPE: $userType")
        // if (_uiState.hasLoadedOnce) return
@@ -112,6 +115,7 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadTodayAttendance(
         userId: String,
         batchId: Long,
@@ -157,6 +161,7 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun markCheckIn(
         userId: String,
         userType: String,
@@ -195,6 +200,7 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun markCheckOut(
         userId: String,
         batchId: Long,

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import com.example.attendance.data.workManager.WorkManagerHelper
 import com.example.attendance.presentation.navGraph.navGraph
 import com.example.attendance.ui.theme.AttendanceTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
     val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WorkManagerHelper.enqueuePeriodic(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         //enableEdgeToEdge()
 //        installSplashScreen().apply {

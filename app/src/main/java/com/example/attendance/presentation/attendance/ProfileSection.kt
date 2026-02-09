@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.attendance
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,13 +26,15 @@ import androidx.compose.ui.res.stringResource
 import com.example.attendance.R
 import com.example.attendance.data.local.entity.CandidateEntity
 import com.example.attendance.data.local.entity.FacultyEntity
+import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.dimens
 
 @Composable
 fun ProfileSection(
     type: String,
     candidate: CandidateEntity?,
-    faculty: FacultyEntity?
+    faculty: FacultyEntity?,
+    domain: DomainType
 ) {
 
     val dimens = MaterialTheme.dimens
@@ -43,13 +46,13 @@ fun ProfileSection(
         Image(
             painter = if (type == "CANDIDATE"){
                 if (candidate?.gender == "M"){
-                    painterResource(R.drawable.ic_profile)
+                    painterResource(R.drawable.ic_profile_male)
                 }else{
                     painterResource(R.drawable.ic_profile_female)
                 }
             }else{
                 if (faculty?.gender == "M"){
-                    painterResource(R.drawable.ic_profile)
+                    painterResource(R.drawable.ic_profile_male)
                 }else{
                     painterResource(R.drawable.ic_profile_female)
                 }
@@ -58,6 +61,7 @@ fun ProfileSection(
             modifier = Modifier
                 .size(dimens.avatarM)
                 .clip(CircleShape)
+                .background(domain.primaryColor)
         )
 
         Spacer(Modifier.width(dimens.spaceM))

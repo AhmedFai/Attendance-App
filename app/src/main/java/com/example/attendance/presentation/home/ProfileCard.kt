@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,7 +58,7 @@ fun ProfileCard(
 
             Image(
                 painter = if (gender == "M"){
-                    painterResource(R.drawable.ic_profile)
+                    painterResource(R.drawable.ic_profile_male)
                 }else{
                     painterResource(R.drawable.ic_profile_female)
                 },
@@ -65,6 +66,7 @@ fun ProfileCard(
                 modifier = Modifier
                     .size(dimens.avatarM)
                     .clip(CircleShape)
+                    .background(domain.primaryColor)
             )
 
             Spacer(Modifier.width(dimens.spaceM))

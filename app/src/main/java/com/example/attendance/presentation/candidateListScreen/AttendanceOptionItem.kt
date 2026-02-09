@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.candidateListScreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,6 +58,7 @@ fun AttendanceOptionItem(
                 modifier = Modifier
                     .size(dimens.avatarS)
                     .clip(CircleShape)
+                    .background(color)
             )
 
             Spacer(Modifier.width(dimens.spaceM))

@@ -82,7 +82,7 @@ fun HomeScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is HomeUIEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG).show()
                 }
             }
         }
