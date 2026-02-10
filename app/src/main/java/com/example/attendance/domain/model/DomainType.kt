@@ -16,6 +16,8 @@ enum class DomainType(
         secondaryColor = Color(0xFF795FDA),
         gradient = listOf(
             Color(0xFF403374),
+            Color(0xFF403374),
+            Color(0xFF403374).copy(alpha = 0.9f),
             Color(0xFF795FDA)
         )
     ),
@@ -25,6 +27,8 @@ enum class DomainType(
         secondaryColor = Color(0xFF173430),
         gradient = listOf(
             Color(0xFF00A099),
+            Color(0xFF00A099),
+            Color(0xFF00A099).copy(alpha = 0.9f),
             Color(0xFF5CCEC6)
         )
     )

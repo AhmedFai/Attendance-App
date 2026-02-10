@@ -41,20 +41,20 @@ fun CandidateListScreen(
 ) {
     val viewModel: CandidateListViewModel = hiltViewModel()
     val domain = viewModel.domain
-    val systemUiController = rememberSystemUiController()
+    //val systemUiController = rememberSystemUiController()
     val state = viewModel.uiState
     val dimens = MaterialTheme.dimens
 
-    DisposableEffect(viewModel.domain) {
-        systemUiController.setStatusBarColor(
-            color = viewModel.domain.primaryColor,
-            darkIcons = false
-        )
-
-        onDispose {
-            // kuch nahi – next screen handle karega
-        }
-    }
+//    DisposableEffect(viewModel.domain) {
+//        systemUiController.setStatusBarColor(
+//            color = viewModel.domain.primaryColor,
+//            darkIcons = false
+//        )
+//
+//        onDispose {
+//            // kuch nahi – next screen handle karega
+//        }
+//    }
 
     LaunchedEffect(batchId) {
         viewModel.loadCandidates(batchId)

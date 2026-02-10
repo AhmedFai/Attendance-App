@@ -38,21 +38,21 @@ fun BatchListScreen(
     onMarkAttendance: (Long) -> Unit
 ) {
     var showAttendanceSheet by remember { mutableStateOf(false) }
-    val systemUiController = rememberSystemUiController()
+    //val systemUiController = rememberSystemUiController()
     val dimens = MaterialTheme.dimens
     var selectedScreen: String = ""
     var selectedBatchId by remember { mutableStateOf<Long?>(null) }
 
-    DisposableEffect(viewModel.domain) {
-        systemUiController.setStatusBarColor(
-            color = viewModel.domain.primaryColor,
-            darkIcons = false
-        )
-
-        onDispose {
-            // kuch nahi – next screen handle karega
-        }
-    }
+//    DisposableEffect(viewModel.domain) {
+//        systemUiController.setStatusBarColor(
+//            color = viewModel.domain.primaryColor,
+//            darkIcons = false
+//        )
+//
+//        onDispose {
+//            // kuch nahi – next screen handle karega
+//        }
+//    }
     val domain = viewModel.domain
     val state = viewModel.uiState
 

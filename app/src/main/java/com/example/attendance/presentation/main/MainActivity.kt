@@ -56,17 +56,20 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                val isSystemInDarkMode = isSystemInDarkTheme()
+                val domain = viewModel.domain
                 val systemController = rememberSystemUiController()
+
                 SideEffect {
-                    systemController.setSystemBarsColor(
-                        color = Color.Transparent,
-                        darkIcons = !isSystemInDarkMode
-                    )
+                    domain.let {
+                        systemController.setStatusBarColor(
+                            color = it.primaryColor,
+                            darkIcons = false
+                        )
+                    }
                 }
                 Box(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.background)
+                        .background(color = domain.primaryColor)
                 ) {
                     if (startDestination != null) {
                         navGraph(startDestination)

@@ -65,7 +65,7 @@ fun AttendanceScreen(
     val viewModel: AttendanceViewModel = hiltViewModel()
     val dimens = MaterialTheme.dimens
     var click: String = ""
-    val systemUiController = rememberSystemUiController()
+    //val systemUiController = rememberSystemUiController()
     val state = viewModel.uiState
     val context = LocalContext.current
     fetchEmbeddingsLauncher = rememberLauncherForActivityResult(
@@ -139,16 +139,16 @@ fun AttendanceScreen(
             }
         }
 
-    DisposableEffect(viewModel.domain) {
-        systemUiController.setStatusBarColor(
-            color = viewModel.domain.primaryColor,
-            darkIcons = false
-        )
-
-        onDispose {
-            // kuch nahi – next screen handle karega
-        }
-    }
+//    DisposableEffect(viewModel.domain) {
+//        systemUiController.setStatusBarColor(
+//            color = viewModel.domain.primaryColor,
+//            darkIcons = false
+//        )
+//
+//        onDispose {
+//            // kuch nahi – next screen handle karega
+//        }
+//    }
 
     Column(
         modifier = Modifier
