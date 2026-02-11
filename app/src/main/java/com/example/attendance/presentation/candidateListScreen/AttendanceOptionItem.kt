@@ -58,7 +58,7 @@ fun AttendanceOptionItem(
                 modifier = Modifier
                     .size(dimens.avatarS)
                     .clip(CircleShape)
-                    .background(color)
+                    .background(color.copy(alpha = 0.18f))
             )
 
             Spacer(Modifier.width(dimens.spaceM))

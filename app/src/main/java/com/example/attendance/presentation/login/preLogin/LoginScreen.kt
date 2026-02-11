@@ -319,7 +319,7 @@ fun LoginScreen(
                     keyboardController?.hide()
                     viewModel.onLogin(
                         loginRequest = LoginRequest(
-                            loginId = viewModel.userId,
+                            loginId = viewModel.userId.uppercase(),
                             password = viewModel.password
                         )
                     )

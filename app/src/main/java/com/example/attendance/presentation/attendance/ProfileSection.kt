@@ -61,7 +61,7 @@ fun ProfileSection(
             modifier = Modifier
                 .size(dimens.avatarM)
                 .clip(CircleShape)
-                .background(domain.primaryColor)
+                .background(domain.primaryColor.copy(alpha = 0.18f))
         )
 
         Spacer(Modifier.width(dimens.spaceM))
