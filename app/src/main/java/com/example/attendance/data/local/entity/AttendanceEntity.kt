@@ -11,6 +11,7 @@ data class AttendanceEntity(
     val userId: String,
     val userType: String,   // CANDIDATE / FACULTY
     val batchId: Long,
+    val batchRegNo: String,
 
     val attendanceDate: String,
 

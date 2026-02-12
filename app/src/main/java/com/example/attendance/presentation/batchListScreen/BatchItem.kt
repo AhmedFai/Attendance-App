@@ -1,6 +1,8 @@
 package com.example.attendance.presentation.batchListScreen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +27,7 @@ import com.example.attendance.data.local.entity.BatchEntity
 import com.example.attendance.ui.theme.dimens
 import com.example.attendance.util.AppUtil.calculateBatchProgress
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BatchItem(
     batch: BatchEntity,

@@ -166,6 +166,7 @@ class AttendanceViewModel @Inject constructor(
         userId: String,
         userType: String,
         batchId: Long,
+        batchRegNo: String,
         latitude: Double?,
         longitude: Double?
     ) {
@@ -181,6 +182,7 @@ class AttendanceViewModel @Inject constructor(
                 userId = userId,
                 userType = userType,
                 batchId = batchId,
+                batchRegNo = batchRegNo,
                 attendanceDate = currentDate,
                 checkIn = currentTime,
                 checkOut = null,
@@ -190,7 +192,7 @@ class AttendanceViewModel @Inject constructor(
                 capturedLongitude = longitude,
                 syncStatus = "PENDING"
             )
-
+            Log.e("CHECK_IN", entity.toString())
             markCheckInUseCase(entity)
             _uiState = _uiState.copy(
                 showSuccessSheet = true,

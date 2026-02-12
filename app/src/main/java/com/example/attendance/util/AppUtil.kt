@@ -2,7 +2,9 @@ package com.example.attendance.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -26,6 +28,7 @@ object AppUtil {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun calculateBatchProgress(
         startDate: String,
         endDate: String

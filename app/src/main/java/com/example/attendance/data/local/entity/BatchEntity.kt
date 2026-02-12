@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class BatchEntity(
     @PrimaryKey val batchId: Long,
     val batchName: String,
+    val batchRegNo: String,
     val startDate: String,
     val endDate: String,
     val latitude: Double,

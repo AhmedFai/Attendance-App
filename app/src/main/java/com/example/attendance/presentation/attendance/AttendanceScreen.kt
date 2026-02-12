@@ -82,6 +82,7 @@ fun AttendanceScreen(
             userId,
             userType,
             batchId,
+            bathRegNo = state.batch?.batchRegNo ?: "",
             capturedLat,
             capturedLng,
         )
@@ -301,6 +302,7 @@ private fun handleAuthenticationResult(
     userId: String,
     userType: String,
     batchId: Long,
+    bathRegNo: String,
     latitude: Double?,
     longitude: Double?,
 ) {
@@ -313,6 +315,7 @@ private fun handleAuthenticationResult(
                     userId = userId,
                     userType = userType,
                     batchId = batchId,
+                    batchRegNo = bathRegNo,
                     latitude = latitude,
                     longitude = longitude
                 )

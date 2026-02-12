@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
@@ -31,8 +32,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WorkManagerHelper.enqueuePeriodic(this)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        //enableEdgeToEdge()
+       // WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
 //        installSplashScreen().apply {
 //            setKeepOnScreenCondition{
 //                viewModel.splashScreenCondition

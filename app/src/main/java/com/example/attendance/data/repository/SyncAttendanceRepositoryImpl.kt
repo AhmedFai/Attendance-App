@@ -1,5 +1,6 @@
 package com.example.attendance.data.repository
 
+import android.content.Context
 import android.content.SyncResult
 import com.example.attendance.data.datastore.AppPreferences
 import com.example.attendance.data.remote.api.ApiServices
@@ -13,10 +14,13 @@ import com.example.attendance.domain.model.facultyAttendanceData.FacultyAttendan
 import com.example.attendance.domain.repository.AttendanceRepository
 import com.example.attendance.domain.repository.NetworkChecker
 import com.example.attendance.domain.repository.SyncAttendanceRepository
+import com.example.attendance.util.AppUtil
 import com.example.attendance.util.Constants
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class SyncAttendanceRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val repository: AttendanceRepository,
     private val api: ApiServices,
     private val networkChecker: NetworkChecker,
@@ -44,14 +48,15 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
                 .filter { it.userType == "CANDIDATE" }
                 .map {
                     CandidateAttendance(
-                        imeiNo = "eb197b9cab05dac2",
+                        imeiNo = AppUtil.getAndroidId(context),
                         attendanceDate = it.attendanceDate,
                         batchId = it.batchId.toString(),
                         candidateId = it.userId,
                         checkIn = it.checkIn,
-                        checkOut = it.checkOut,
-                        totalHours = it.totalHours,
-                        address = ""
+                        checkOut = it.checkOut ?: "",
+                        totalHours = it.totalHours ?: "",
+                        address = "",
+                        batchRegNo = it.batchRegNo
                     )
                 }
 
@@ -59,14 +64,15 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
                 .filter { it.userType == "FACULTY" }
                 .map {
                     FacultyAttendance(
-                        imeiNo = "eb197b9cab05dac2",
+                        imeiNo = AppUtil.getAndroidId(context),
                         attendanceDate = it.attendanceDate,
                         batchId = it.batchId.toString(),
                         checkIn = it.checkIn,
-                        checkOut = it.checkOut,
-                        totalHours = it.totalHours,
+                        checkOut = it.checkOut ?: "",
+                        totalHours = it.totalHours ?: "",
                         address = "",
-                        login = it.userId
+                        login = it.userId,
+                        batchRegNo = it.batchRegNo
                     )
                 }
 

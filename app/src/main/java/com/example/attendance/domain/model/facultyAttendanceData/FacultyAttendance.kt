@@ -8,5 +8,6 @@ data class FacultyAttendance(
     val checkOut: String?,
     val totalHours: String?,
     val address: String,
-    val login: String
+    val login: String,
+    val batchRegNo: String
 )

@@ -8,5 +8,6 @@ data class CandidateAttendance(
     val checkIn: String?,
     val checkOut: String?,
     val totalHours: String?,
-    val address: String
+    val address: String,
+    val batchRegNo: String
 )

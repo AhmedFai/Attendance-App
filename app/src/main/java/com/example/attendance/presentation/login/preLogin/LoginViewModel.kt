@@ -138,7 +138,7 @@ class LoginViewModel @Inject constructor(
 //                        _loginUiEvent.emit(
 //                            LoginUiEvent.ShowToast(UiText.StringRes(R.string.loginSuccess))
 //                        )
-                        saveSession(userId, state.data.accessToken)
+                        saveSession(state.data.loginId, state.data.accessToken)
                         if (state.data.faceRegistered == "N") {
                             _loginUiEvent.emit(LoginUiEvent.StartFaceSdk)
                         } else {
