@@ -1,6 +1,9 @@
 package com.example.attendance.presentation.common
 
+import com.example.attendance.domain.model.DomainType
+
 data class AppDialogConfig(
+    val domainType: DomainType,
     val title: String? = null,
     val message: String,
     val positiveText: String? = null,

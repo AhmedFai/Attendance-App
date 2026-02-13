@@ -88,7 +88,7 @@ fun AttendanceTheme(
         }
     }
 
-    AppUtils(app_Dimens = appDimens) {
+    AppUtils(appDimens = appDimens) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = typography,

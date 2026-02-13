@@ -7,6 +7,7 @@ import com.example.attendance.domain.model.facultyAttendanceData.FacultyAttendan
 import com.example.attendance.domain.model.facultyMasterData.FacultyMasterDataResponse
 import com.example.attendance.domain.model.updateRegisteredFace.UpdateRegisteredFaceRequest
 import com.example.attendance.domain.model.updateRegisteredFace.UpdateRegisteredFaceResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -26,16 +27,19 @@ interface ApiServices {
 
     @POST
     suspend fun syncCandidateAttendance(
-        @Url fullUrl: String, @Body body: CandidateAttendanceRequest
-    ): AttendanceResponse
+        @Url fullUrl: String,
+        @Body body: CandidateAttendanceRequest
+    ): Response<AttendanceResponse>
 
     @POST
     suspend fun syncFacultyAttendance(
-        @Url fullUrl: String, @Body body: FacultyAttendanceRequest
-    ): AttendanceResponse
+        @Url fullUrl: String,
+        @Body body: FacultyAttendanceRequest
+    ): Response<AttendanceResponse>
 
     @POST
     suspend fun updateRegisteredFace(
-        @Url fullUrl: String, @Body body: UpdateRegisteredFaceRequest
+        @Url fullUrl: String,
+        @Body body: UpdateRegisteredFaceRequest
     ) : UpdateRegisteredFaceResponse
 }

@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.R
@@ -112,9 +114,9 @@ fun AttendanceScreen(
                     gpsLauncher,
                     fetchEmbeddingsLauncher,
                     userId,
-                    centerLat!!,
-                    centerLng!!,
-                    radius!!
+                    centerLat,
+                    centerLng,
+                    radius
                 )
             }
         }
@@ -131,9 +133,9 @@ fun AttendanceScreen(
                     gpsLauncher,
                     fetchEmbeddingsLauncher,
                     userId,
-                    centerLat!!,
-                    centerLng!!,
-                    radius!!
+                    centerLat,
+                    centerLng,
+                    radius
                 )
             } else {
                 Toast.makeText(context, R.string.gpsRequired, Toast.LENGTH_SHORT).show()
@@ -207,7 +209,7 @@ fun AttendanceScreen(
                             domain = viewModel.domain
                         )
 
-                        Divider(Modifier.padding(vertical = dimens.spaceM))
+                        HorizontalDivider(Modifier.padding(vertical = dimens.spaceM))
 
                         // Time
                         TimeSection()
@@ -228,9 +230,9 @@ fun AttendanceScreen(
                                     gpsLauncher,
                                     fetchEmbeddingsLauncher,
                                     userId,
-                                    centerLat!!,
-                                    centerLng!!,
-                                    radius!!
+                                    centerLat,
+                                    centerLng,
+                                    radius
                                 )
                             },
                             onCheckOut = {
@@ -242,14 +244,14 @@ fun AttendanceScreen(
                                     gpsLauncher,
                                     fetchEmbeddingsLauncher,
                                     userId,
-                                    centerLat!!,
-                                    centerLng!!,
-                                    radius!!
+                                    centerLat,
+                                    centerLng,
+                                    radius
                                 )
                             }
                         )
 
-                        Divider(Modifier.padding(vertical = dimens.spaceM))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = dimens.spaceM))
 
                         // States
                         AttendanceStats(

@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.dimens
@@ -41,6 +42,7 @@ fun ProfileCard(
 ) {
 
     val dimens = MaterialTheme.dimens
+    val viewmodel : HomeViewModel = hiltViewModel()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -91,7 +93,8 @@ fun ProfileCard(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = domain.primaryColor
                 ),
-                shape = RoundedCornerShape(dimens.radiusM)
+                shape = RoundedCornerShape(dimens.radiusM),
+                enabled = !viewmodel.uiState.isSyncing
             ) {
                 Text(
                     stringResource(R.string.logout),

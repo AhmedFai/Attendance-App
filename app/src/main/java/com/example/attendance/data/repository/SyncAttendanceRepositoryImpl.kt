@@ -41,12 +41,17 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
             if (!networkChecker.isConnected()) {
                 return SyncAttendanceResult.NoInternet
             }
+
             val pending = repository.getPendingAttendances()
             if (pending.isEmpty()) return SyncAttendanceResult.NoPendingData
 
-            val candidateData = pending
-                .filter { it.userType == "CANDIDATE" }
-                .map {
+            val syncedIds = mutableListOf<Long>()
+
+            val candidatePending = pending.filter { it.userType == "CANDIDATE" }
+
+            if (candidatePending.isNotEmpty()) {
+
+                val candidateData = candidatePending.map {
                     CandidateAttendance(
                         imeiNo = AppUtil.getAndroidId(context),
                         attendanceDate = it.attendanceDate,
@@ -60,9 +65,23 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
                     )
                 }
 
-            val facultyData = pending
-                .filter { it.userType == "FACULTY" }
-                .map {
+                val res = api.syncCandidateAttendance(
+                    candidateUrl,
+                    CandidateAttendanceRequest(candidateData)
+                )
+
+                if (res.isSuccessful && res.body()?.responseCode == 200) {
+                    syncedIds += candidatePending.map { it.id }
+                } else {
+                    return SyncAttendanceResult.Error("Candidate attendance sync failed")
+                }
+            }
+
+            val facultyPending = pending.filter { it.userType == "FACULTY" }
+
+            if (facultyPending.isNotEmpty()) {
+
+                val facultyData = facultyPending.map {
                     FacultyAttendance(
                         imeiNo = AppUtil.getAndroidId(context),
                         attendanceDate = it.attendanceDate,
@@ -76,27 +95,27 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
                     )
                 }
 
-            if (candidateData.isNotEmpty()) {
-                api.syncCandidateAttendance(candidateUrl,
-                    CandidateAttendanceRequest(candidateData)
-                )
-                //if (res.responseCode == 301) return SyncResult.UpgradeRequired
-            }
-
-            if (facultyData.isNotEmpty()) {
-                api.syncFacultyAttendance(facultyUrl,
+                val res = api.syncFacultyAttendance(
+                    facultyUrl,
                     FacultyAttendanceRequest(facultyData)
                 )
-                //if (res.responseCode == 301) return SyncResult.UpgradeRequired
+
+                if (res.isSuccessful && res.body()?.responseCode == 200) {
+                    syncedIds += facultyPending.map { it.id }
+                } else {
+                    return SyncAttendanceResult.Error("Faculty attendance sync failed")
+                }
             }
 
-            repository.markAttendancesSynced(pending.map { it.id })
+            if (syncedIds.isNotEmpty()) {
+                repository.markAttendancesSynced(syncedIds)
+            }
 
+            return SyncAttendanceResult.Success
         }catch (e : Exception){
             e.printStackTrace()
             return SyncAttendanceResult.Error(e.message.toString())
         }
 
-        return SyncAttendanceResult.Success
     }
 }

@@ -6,7 +6,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.AttendanceTheme
 
 @Composable
@@ -14,6 +17,7 @@ fun AppAlertDialog(
     config: AppDialogConfig
 ) {
     AlertDialog(
+        containerColor = Color.White,
         onDismissRequest = {
             if (config.cancelable) {
                 config.onDismiss?.invoke()
@@ -23,7 +27,9 @@ fun AppAlertDialog(
             config.title?.let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             }
         },
@@ -41,7 +47,7 @@ fun AppAlertDialog(
                         config.onDismiss?.invoke()
                     }
                 ) {
-                    Text(it)
+                    Text(it, color = Color.Black)
                 }
             }
         },
@@ -53,7 +59,7 @@ fun AppAlertDialog(
                         config.onDismiss?.invoke()
                     }
                 ) {
-                    Text(it)
+                    Text(it, color = Color.Black)
                 }
             }
         }
@@ -66,6 +72,7 @@ fun AlertDialogPreview(){
 
             AppAlertDialog(
                 config = AppDialogConfig(
+                    domainType = DomainType.DDUGKY,
                     title = "Alert",
                     message = "Alert dialog preview",
                     positiveText = "OK",

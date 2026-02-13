@@ -34,12 +34,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
+import com.example.attendance.presentation.common.AppAlertDialog
+import com.example.attendance.presentation.common.AppDialogConfig
 import com.example.attendance.presentation.home.shimmer.HomeShimmer
+import com.example.attendance.presentation.login.preLogin.LoginLoadingOverlay
 import com.example.attendance.ui.theme.dimens
 import com.example.attendance.util.Constants
 import com.google.gson.Gson
@@ -47,15 +51,6 @@ import com.pehchaan.backend.service.AuthenticationActivity
 
 @Composable
 fun HomeScreen(
-//    domain: DomainType,
-//    userName: String,
-//    email: String,
-//    onLogout: () -> Unit,
-//    onMarkAttendance: () -> Unit,
-//    onOfflineData: () -> Unit,
-//    onFetchEmbeddings: () -> Unit,
-//    onSync: () -> Unit
-
     viewModel: HomeViewModel = hiltViewModel(),
     onLogout: () -> Unit,
     onMarkAttendance: () -> Unit
@@ -96,111 +91,149 @@ fun HomeScreen(
             viewModel.refreshCounts()
         }
     }
-    AnimatedVisibility(
-        visible = !isLoggingOut,
-        exit = fadeOut() + scaleOut()
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
+        AnimatedVisibility(
+            visible = !isLoggingOut,
+            exit = fadeOut() + scaleOut()
+        ) {
 
-        if (uiState.isLoading) {
-            HomeShimmer()
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .background(Color.White)
-                    .padding(bottom = dimens.screenPaddingVertical)
-            ) {
-                Box(
+            if (uiState.isLoading) {
+                HomeShimmer()
+            } else {
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .background(Color.White)
+                        .padding(bottom = dimens.screenPaddingVertical)
                 ) {
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(0, 0, 15, 15))
-                            .height(dimens.homeBackgroundBox)
-                            .background(
-                                Brush.verticalGradient(viewModel.domain.gradient)
-                            )
-                    )
-
-                    // 🧱 SOLID BACKGROUND BELOW
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(top = dimens.homeBackgroundBox)
                             .background(Color.White)
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = dimens.spaceL),
-                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-
-                        Spacer(Modifier.height(dimens.space3XL))
 
                         Box(
                             modifier = Modifier
-                                .height(dimens.logoHeight)
-                                .width(dimens.logoWidth)
-                                .padding(dimens.spaceS)
-                                .clip(RoundedCornerShape(dimens.spaceXS))
-                                .background(Color.White),
-                            contentAlignment = Alignment.Center
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(0, 0, 15, 15))
+                                .height(dimens.homeBackgroundBox)
+                                .background(
+                                    Brush.verticalGradient(viewModel.domain.gradient)
+                                )
+                        )
+
+                        // 🧱 SOLID BACKGROUND BELOW
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = dimens.homeBackgroundBox)
+                                .background(Color.White)
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = dimens.spaceL),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Image(
-                                painter = painterResource(
-                                    if (viewModel.domain == DomainType.DDUGKY)
-                                        R.drawable.ic_ddgky
-                                    else
-                                        R.drawable.ic_rseti
-                                ),
-                                contentDescription = null,
-                                modifier = Modifier.height(dimens.space2XL)
+
+                            Spacer(Modifier.height(dimens.space3XL))
+
+                            Box(
+                                modifier = Modifier
+                                    .height(dimens.logoHeight)
+                                    .width(dimens.logoWidth)
+                                    .padding(dimens.spaceS)
+                                    .clip(RoundedCornerShape(dimens.spaceXS))
+                                    .background(Color.White),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(
+                                        if (viewModel.domain == DomainType.DDUGKY)
+                                            R.drawable.ic_ddgky
+                                        else
+                                            R.drawable.ic_rseti
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.height(dimens.space2XL)
+                                )
+                            }
+
+                            Spacer(Modifier.height(dimens.spaceL))
+
+                            // 👤 PROFILE CARD
+                            ProfileCard(
+                                domain = viewModel.domain,
+                                userName = viewModel.uiState.userName,
+                                email = viewModel.uiState.email,
+                                gender = viewModel.uiState.gender,
+                                onLogout = {
+                                    viewModel.onLogoutClick()
+                                }
                             )
+
+                            Spacer(Modifier.height(dimens.spaceL))
+
+                            // 🔲 ACTION GRID
+                            ActionGrid(
+                                domain = viewModel.domain,
+                                pendingCount = viewModel.uiState.pendingCount,
+                                syncedCount = viewModel.uiState.syncedCount,
+                                onMarkAttendance = { onMarkAttendance() },
+                                onOfflineData = {},
+                                onFetchEmbeddings = {
+                                    fetchUserEmbeddings(context, json, fetchEmbeddingsLauncher)
+                                },
+                                onSync = {
+                                    viewModel.syncAttendance()
+                                },
+                                onTotalSync = {
+
+                                }
+                            )
+
                         }
-
-                        Spacer(Modifier.height(dimens.spaceL))
-
-                        // 👤 PROFILE CARD
-                        ProfileCard(
-                            domain = viewModel.domain,
-                            userName = viewModel.uiState.userName,
-                            email = viewModel.uiState.email,
-                            gender = viewModel.uiState.gender,
-                            onLogout = {
-                                viewModel.logout()
-                            }
-                        )
-
-                        Spacer(Modifier.height(dimens.spaceL))
-
-                        // 🔲 ACTION GRID
-                        ActionGrid(
-                            domain = viewModel.domain,
-                            pendingCount = viewModel.uiState.pendingCount,
-                            syncedCount = viewModel.uiState.syncedCount,
-                            onMarkAttendance = { onMarkAttendance() },
-                            onOfflineData = {},
-                            onFetchEmbeddings = {
-                                fetchUserEmbeddings(context, json, fetchEmbeddingsLauncher)
-                            },
-                            onSync = {
-                                viewModel.syncAttendance()
-                            },
-                            onTotalSync = {
-
-                            }
-                        )
-
                     }
                 }
             }
+        }
+        if (uiState.isSyncing) {
+            LoginLoadingOverlay(
+                color = viewModel.domain.primaryColor
+            )
+        }
+        // LOGOUT CONFIRM DIALOG
+        if (uiState.showLogoutDialog) {
+            AppAlertDialog(
+                AppDialogConfig(
+                    domainType = viewModel.domain,
+                    title = stringResource(R.string.logout),
+                    message = stringResource(R.string.areYouSure),
+                    positiveText = stringResource(R.string.logout),
+                    negativeText = stringResource(R.string.cancel),
+                    onPositiveClick = { viewModel.confirmLogout() },
+                    onDismiss = { viewModel.onDialogDismiss() }
+                )
+            )
+        }
+
+        // SYNC WARNING DIALOG
+        if (uiState.showSyncDialog) {
+            AppAlertDialog(
+                AppDialogConfig(
+                    domainType = viewModel.domain,
+                    title = stringResource(R.string.unSyncedAttendance),
+                    message = stringResource(R.string.pendingAttendanceBeforeLogout),
+                    positiveText = stringResource(R.string.syncAndLogout),
+                    negativeText = stringResource(R.string.cancel),
+                    onPositiveClick = { viewModel.syncAndLogout() },
+                    onDismiss = { viewModel.onDialogDismiss() }
+                )
+            )
         }
     }
 
@@ -219,7 +252,8 @@ private fun fetchUserEmbeddings(
     try {
         launcher.launch(intent)
     } catch (e: Exception) {
-        Toast.makeText(context, "Fetch embeddings service unavailable", Toast.LENGTH_SHORT).show()
+        e.printStackTrace()
+        Toast.makeText(context, R.string.fetchEmbeddingsServiceUnavailable, Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -230,7 +264,7 @@ private fun handleFetchEmbeddingsResult(result: ActivityResult, context: Context
         val fetchedCount = result.data?.getIntExtra("fetched_count", 0) ?: 0
         when(status){
             "success" -> {
-                Toast.makeText(context, "Embeddings fetched for : $fetchedCount users", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,  R.string.embeddingsFetched + fetchedCount, Toast.LENGTH_SHORT).show()
             }
             "partial_success" -> {
                 Toast.makeText(context, "Partially succeeded $message", Toast.LENGTH_SHORT).show()

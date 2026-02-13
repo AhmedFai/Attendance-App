@@ -63,4 +63,11 @@
     <string name="outsideRange">You are outside facility range.</string>
     <string name="checkInSuccess">Check-In Successful.</string>
     <string name="checkOutSuccess">Check-Out Successful.</string>
+    <string name="syncFailed">Sync failed. Cannot logout.</string>
+    <string name="areYouSure">Are you sure you want to logout?</string>
+    <string name="unSyncedAttendance">Unsynced Attendance</string>
+    <string name="pendingAttendanceBeforeLogout">You have pending attendance. Please sync before logout.</string>
+    <string name="syncAndLogout">Sync &amp; Logout</string>
+    <string name="fetchEmbeddingsServiceUnavailable">Fetch embeddings service unavailable</string>
+    <string name="embeddingsFetched">Embeddings fetched for : </string>
 </resources>

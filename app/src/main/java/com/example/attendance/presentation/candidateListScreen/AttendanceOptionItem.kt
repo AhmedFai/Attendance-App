@@ -30,7 +30,7 @@ import com.example.attendance.ui.theme.dimens
 fun AttendanceOptionItem(
     title: String,
     icon: Int,
-    color: androidx.compose.ui.graphics.Color,
+    color: Color,
     onClick: () -> Unit
 ) {
 
