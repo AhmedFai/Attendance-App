@@ -37,7 +37,10 @@ fun AttendanceOptionBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        shape = RoundedCornerShape(topStart = dimens.bottomSheetTopShape, topEnd = dimens.bottomSheetTopShape),
+        shape = RoundedCornerShape(
+            topStart = dimens.bottomSheetTopShape,
+            topEnd = dimens.bottomSheetTopShape
+        ),
         containerColor = Color.White
     ) {
 

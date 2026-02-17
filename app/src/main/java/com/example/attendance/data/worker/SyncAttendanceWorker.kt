@@ -16,7 +16,7 @@ class SyncAttendanceWorker @AssistedInject constructor(
     private val syncAttendanceUseCase: SyncAttendanceUseCase
 ) : CoroutineWorker(appContext, params) {
     override suspend fun doWork(): Result {
-        return when(syncAttendanceUseCase()){
+        return when (syncAttendanceUseCase()) {
             is SyncAttendanceResult.Error -> Result.retry()
             SyncAttendanceResult.Loading -> Result.retry()
             SyncAttendanceResult.NoInternet -> Result.retry()
@@ -24,5 +24,4 @@ class SyncAttendanceWorker @AssistedInject constructor(
             SyncAttendanceResult.Success -> Result.success()
         }
     }
-
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class DomainInterceptor @Inject constructor(
     private val domainDataStore: AppPreferences
-): Interceptor {
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
@@ -21,7 +21,7 @@ class DomainInterceptor @Inject constructor(
             domainDataStore.getSelectedDomain()
         }
 
-        val baseUrl = when(domain){
+        val baseUrl = when (domain) {
             DomainType.RSETI -> Constants.RSETI
             DomainType.DDUGKY -> Constants.DDUGKY
         }
@@ -38,7 +38,8 @@ class DomainInterceptor @Inject constructor(
             .url(newUrl)
             .build()
 
-        Log.e("DOMAIN_INTERCEPTOR",
+        Log.e(
+            "DOMAIN_INTERCEPTOR",
             "Selected=$domain | FinalURL=${newUrl}"
         )
 

@@ -17,10 +17,10 @@ interface CandidateDao {
     suspend fun insertCandidate(candidate: CandidateEntity)
 
     @Query("SELECT * FROM candidate")
-    suspend fun getAllCandidate() : List<CandidateEntity>
+    suspend fun getAllCandidate(): List<CandidateEntity>
 
     @Query("SELECT * FROM candidate WHERE batchId = :batchId ORDER BY rollNo ASC")
-    fun getCandidateByBatch(batchId: Long) : Flow<List<CandidateEntity>>
+    fun getCandidateByBatch(batchId: Long): Flow<List<CandidateEntity>>
 
     @Query("SELECT COUNT(*) FROM candidate")
     suspend fun getCandidateCount(): Int

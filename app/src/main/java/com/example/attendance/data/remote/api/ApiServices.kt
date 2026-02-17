@@ -41,5 +41,5 @@ interface ApiServices {
     suspend fun updateRegisteredFace(
         @Url fullUrl: String,
         @Body body: UpdateRegisteredFaceRequest
-    ) : UpdateRegisteredFaceResponse
+    ): UpdateRegisteredFaceResponse
 }

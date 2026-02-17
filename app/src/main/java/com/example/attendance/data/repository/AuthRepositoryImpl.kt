@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(
     private val prefs: AppPreferences
-): AuthRepository {
+) : AuthRepository {
     override val userSession = prefs.sessionFlow
 
     override suspend fun saveSession(userId: String, token: String) {

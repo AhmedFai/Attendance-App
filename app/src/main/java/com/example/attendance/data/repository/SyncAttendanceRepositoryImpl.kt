@@ -112,7 +112,7 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
             }
 
             return SyncAttendanceResult.Success
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             return SyncAttendanceResult.Error(e.message.toString())
         }

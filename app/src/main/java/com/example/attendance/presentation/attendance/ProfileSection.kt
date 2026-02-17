@@ -44,16 +44,16 @@ fun ProfileSection(
     ) {
 
         Image(
-            painter = if (type == "CANDIDATE"){
-                if (candidate?.gender == "M"){
+            painter = if (type == "CANDIDATE") {
+                if (candidate?.gender == "M") {
                     painterResource(R.drawable.ic_profile_male)
-                }else{
+                } else {
                     painterResource(R.drawable.ic_profile_female)
                 }
-            }else{
-                if (faculty?.gender == "M"){
+            } else {
+                if (faculty?.gender == "M") {
                     painterResource(R.drawable.ic_profile_male)
-                }else{
+                } else {
                     painterResource(R.drawable.ic_profile_female)
                 }
             },

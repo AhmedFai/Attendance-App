@@ -9,7 +9,7 @@ class GetActiveBatchesUseCase @Inject constructor(
     private val repository: BatchRepository
 ) {
 
-     operator fun invoke(): Flow<List<BatchEntity>>{
+    operator fun invoke(): Flow<List<BatchEntity>> {
         return repository.getActiveBatches()
     }
 

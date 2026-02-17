@@ -14,26 +14,26 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class FacultyMasterDataRepositoryImpl @Inject constructor(
-    private val api : ApiServices,
-    private val prefs : AppPreferences
+    private val api: ApiServices,
+    private val prefs: AppPreferences
 ) : FacultyMasterDataRepository {
     override suspend fun getFacultyMasterData(): Flow<ApiState<FacultyMasterDataResponse>> {
         return flow {
             emit(ApiState.Loading())
             try {
                 val domain = prefs.getSelectedDomain()
-                val baseUrl = when(domain){
+                val baseUrl = when (domain) {
                     DomainType.RSETI -> Constants.RSETI
                     DomainType.DDUGKY -> Constants.DDUGKY
                 }
                 val fullUrl = baseUrl + "facultyMasterData"
                 val response = api.getFacultyMasterData(fullUrl)
-                if (response.responseCode == 200){
+                if (response.responseCode == 200) {
                     emit(ApiState.Success(response))
-                }else{
+                } else {
                     emit(ApiState.Error(response.responseDesc, null))
                 }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 emit(ApiState.Exception(e, null))
             }

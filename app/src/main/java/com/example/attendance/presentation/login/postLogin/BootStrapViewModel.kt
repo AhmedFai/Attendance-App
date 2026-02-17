@@ -37,15 +37,16 @@ class BootStrapViewModel @Inject constructor(
     private val getSessionUseCase: GetLoginSessionUseCase,
     private val saveSessionUseCase: SaveLoginSessionUseCase,
     private val markLoggedInUseCase: MarkLoggedInUseCase,
-) : ViewModel(){
+) : ViewModel() {
 
     var state by mutableStateOf<BootstrapState>(BootstrapState.Idle)
         private set
 
-    fun startBootstrap(){
+    fun startBootstrap() {
         viewModelScope.launch {
-            if (!networkChecker.isConnected()){
-                state = BootstrapState.Error(UiText.StringRes(com.example.attendance.R.string.noInternetConnection))
+            if (!networkChecker.isConnected()) {
+                state =
+                    BootstrapState.Error(UiText.StringRes(com.example.attendance.R.string.noInternetConnection))
                 return@launch
             }
             state = BootstrapState.Loading
@@ -65,7 +66,7 @@ class BootStrapViewModel @Inject constructor(
                 }
                 markLoggedInUseCase()
                 state = BootstrapState.Success
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 state = BootstrapState.Error(UiText.Dynamic(e.message.toString()))
             }
         }
@@ -118,6 +119,7 @@ class BootStrapViewModel @Inject constructor(
             is ApiState.Loading -> {
                 Log.e("BootstrapVM", "Candidate API call loading")
             }
+
             is ApiState.Exception<*> -> {
                 Log.e("BootstrapVM", "Candidate API error: ${result.data.toString()}")
             }

@@ -113,13 +113,13 @@ fun LoginScreen(
                 } else {
 
                     Log.e("WhatInIt", message)
-                    if (message == "User ID already exists on server! Please use a different ID."){
+                    if (message == "User ID already exists on server! Please use a different ID.") {
                         viewModel.onFaceSdkSuccess(
                             UpdateRegisteredFaceRequest(
                                 isFaceRegistered = "Y"
                             )
                         )
-                    }else{
+                    } else {
                         Toast
                             .makeText(context, "✅ Failure: $message", Toast.LENGTH_SHORT)
                             .show()
@@ -133,11 +133,13 @@ fun LoginScreen(
         }
 
     LaunchedEffect(Unit) {
-        viewModel.loginUiEvent.collect{ event ->
-            when(event){
+        viewModel.loginUiEvent.collect { event ->
+            when (event) {
                 is LoginUiEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT)
+                        .show()
                 }
+
                 is LoginUiEvent.StartBootStrap -> {
                     bootStrapViewModel.startBootstrap()
                 }
@@ -157,6 +159,7 @@ fun LoginScreen(
 //                        )
 //                    )
                 }
+
                 else -> {
 
                 }
@@ -339,7 +342,7 @@ fun LoginScreen(
                 )
             }
         }
-        when{
+        when {
             state.isLoading -> {
                 val showLoader =
                     state.isLoading || bootstrapState is BootstrapState.Loading
@@ -350,24 +353,29 @@ fun LoginScreen(
                     )
                 }
             }
+
             state.error != null -> {
                 Log.d("LoginScreenError", "Error: ${state.error}")
             }
+
             state.data != null -> {
                 Log.d("LoginScreenSuccess", "Data: ${state.data?.toString()}")
             }
 
         }
-        when(bootstrapState){
+        when (bootstrapState) {
             is BootstrapState.Error -> {
                 Log.e("Bootstrap", "Error: ${bootstrapState.message}")
             }
+
             BootstrapState.Idle -> {
 
             }
+
             BootstrapState.Loading -> {
 
             }
+
             BootstrapState.Success -> {
                 Log.e("Bootstrap", "Success")
             }

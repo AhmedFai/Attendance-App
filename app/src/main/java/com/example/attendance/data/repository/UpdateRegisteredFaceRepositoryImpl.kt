@@ -30,13 +30,13 @@ class UpdateRegisteredFaceRepositoryImpl @Inject constructor(
                 }
 
                 val fullUrl = baseUrl + "updateFaceRegistered"
-                val response = api.updateRegisteredFace(fullUrl,updateRegisteredFaceRequest)
-                if (response.responseCode == 200){
+                val response = api.updateRegisteredFace(fullUrl, updateRegisteredFaceRequest)
+                if (response.responseCode == 200) {
                     emit(ApiState.Success(response))
-                }else{
+                } else {
                     emit(ApiState.Error(response.responseDesc, null))
                 }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 emit(ApiState.Exception(e, null))
             }

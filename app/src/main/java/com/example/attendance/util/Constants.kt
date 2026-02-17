@@ -20,7 +20,6 @@ object Constants {
     const val APP_VERSION = "appVersion"
 
 
-
     // SDK keys
     const val RESULT_STATUS = "status"
     const val RESULT_MESSAGE = "message"

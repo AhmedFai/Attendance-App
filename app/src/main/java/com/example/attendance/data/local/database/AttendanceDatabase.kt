@@ -21,9 +21,9 @@ import com.example.attendance.data.local.entity.FacultyEntity
     version = 1,
     exportSchema = false
 )
- abstract class AttendanceDatabase : RoomDatabase(){
-     abstract fun batchDao(): BatchDao
-     abstract fun candidateDao(): CandidateDao
-     abstract fun facultyDao(): FacultyDao
-     abstract fun attendanceDao(): AttendanceDao
+abstract class AttendanceDatabase : RoomDatabase() {
+    abstract fun batchDao(): BatchDao
+    abstract fun candidateDao(): CandidateDao
+    abstract fun facultyDao(): FacultyDao
+    abstract fun attendanceDao(): AttendanceDao
 }

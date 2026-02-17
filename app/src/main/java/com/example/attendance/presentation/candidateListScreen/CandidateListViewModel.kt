@@ -31,7 +31,7 @@ class CandidateListViewModel @Inject constructor(
         }
     }
 
-    fun loadCandidates(batchId: Long){
+    fun loadCandidates(batchId: Long) {
         if (uiState.hasLoadedOnce) return
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true)

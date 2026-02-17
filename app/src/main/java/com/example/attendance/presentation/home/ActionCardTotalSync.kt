@@ -36,7 +36,7 @@ fun ActionCardTotalSync(
     icon: Int,
     color: Color,
     onClick: () -> Unit
-){
+) {
 
     val dimens = MaterialTheme.dimens
 

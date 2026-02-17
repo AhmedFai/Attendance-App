@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class DomainRepositoryImpl(
     private val prefs: AppPreferences
-): DomainRepository {
+) : DomainRepository {
     override val selectedDomain: Flow<DomainType> =
         prefs.domainFlow
 

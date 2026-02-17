@@ -5,11 +5,13 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     val routeName: String
+
     @Serializable
     object LoginScreen : Route {
-        override val routeName : String
+        override val routeName: String
             get() = "loginScreen"
     }
+
     @Serializable
     object HomeScreen : Route {
         override val routeName: String
@@ -27,7 +29,7 @@ sealed interface Route {
         override val routeName: String
             get() = "candidateListScreen"
 
-        fun withBatchId(batchId: Long): String{
+        fun withBatchId(batchId: Long): String {
             return "$routeName/$batchId"
         }
     }
@@ -37,7 +39,7 @@ sealed interface Route {
         override val routeName: String
             get() = "attendanceScreen"
 
-        fun withArgs(userType: String,userId: String, batchId: Long): String{
+        fun withArgs(userType: String, userId: String, batchId: Long): String {
             return "$routeName/$userType/$userId/$batchId"
         }
     }

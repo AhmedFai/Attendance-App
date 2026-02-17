@@ -136,7 +136,7 @@ object AppModule {
         api: ApiServices,
         prefs: AppPreferences
     ): CandidateMasterDataRepository =
-        CandidateMasterDataRepositoryImpl(api,prefs)
+        CandidateMasterDataRepositoryImpl(api, prefs)
 
 
     @Provides
@@ -145,7 +145,7 @@ object AppModule {
         api: ApiServices,
         prefs: AppPreferences
     ): FacultyMasterDataRepository =
-        FacultyMasterDataRepositoryImpl(api,prefs)
+        FacultyMasterDataRepositoryImpl(api, prefs)
 
     @Provides
     @Singleton
@@ -162,7 +162,7 @@ object AppModule {
     @Singleton
     fun provideAttendanceDatabase(
         @ApplicationContext context: Context
-    ): AttendanceDatabase{
+    ): AttendanceDatabase {
         return Room.databaseBuilder(
             context,
             AttendanceDatabase::class.java,

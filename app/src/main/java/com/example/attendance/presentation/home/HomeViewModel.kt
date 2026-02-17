@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onLogoutClick(){
+    fun onLogoutClick() {
         uiState = uiState.copy(showLogoutDialog = true)
     }
 
@@ -205,7 +205,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun performLogout(){
+    private suspend fun performLogout() {
 
 
         //uiState = uiState.copy(isLoggingOut = true)

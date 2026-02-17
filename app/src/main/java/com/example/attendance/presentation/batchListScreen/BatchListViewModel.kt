@@ -17,7 +17,7 @@ import javax.inject.Inject
 class BatchListViewModel @Inject constructor(
     getDomain: GetSelectedDomainUseCase,
     private val getActiveBatchesUseCase: GetActiveBatchesUseCase
-): ViewModel() {
+) : ViewModel() {
     var domain by mutableStateOf(DomainType.RSETI)
         private set
 

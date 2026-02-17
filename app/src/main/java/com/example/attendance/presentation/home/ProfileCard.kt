@@ -42,7 +42,7 @@ fun ProfileCard(
 ) {
 
     val dimens = MaterialTheme.dimens
-    val viewmodel : HomeViewModel = hiltViewModel()
+    val viewmodel: HomeViewModel = hiltViewModel()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -59,9 +59,9 @@ fun ProfileCard(
         ) {
 
             Image(
-                painter = if (gender == "M"){
+                painter = if (gender == "M") {
                     painterResource(R.drawable.ic_profile_male)
-                }else{
+                } else {
                     painterResource(R.drawable.ic_profile_female)
                 },
                 contentDescription = null,

@@ -6,7 +6,5 @@ import javax.inject.Inject
 class FacultyMasterDataUseCase @Inject constructor(
     val repo: FacultyMasterDataRepository
 ) {
-
     suspend operator fun invoke() = repo.getFacultyMasterData()
-
 }

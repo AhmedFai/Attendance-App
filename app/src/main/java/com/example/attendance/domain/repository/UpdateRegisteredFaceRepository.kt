@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface UpdateRegisteredFaceRepository {
     suspend fun updateRegisteredFace(
         updateRegisteredFaceRequest: UpdateRegisteredFaceRequest
-    ) : Flow<ApiState<UpdateRegisteredFaceResponse>>
+    ): Flow<ApiState<UpdateRegisteredFaceResponse>>
 }

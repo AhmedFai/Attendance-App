@@ -6,8 +6,8 @@ import android.net.NetworkCapabilities
 import com.example.attendance.domain.repository.NetworkChecker
 
 class NetworkCheckerImpl(
-    private val context : Context
-) : NetworkChecker{
+    private val context: Context
+) : NetworkChecker {
     override fun isConnected(): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager

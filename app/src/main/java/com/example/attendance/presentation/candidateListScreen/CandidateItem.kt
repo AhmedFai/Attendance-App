@@ -78,9 +78,9 @@ fun CandidateItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Image(
-                    painter = if (candidate.gender == "M"){
+                    painter = if (candidate.gender == "M") {
                         painterResource(R.drawable.ic_profile_male)
-                    }else{
+                    } else {
                         painterResource(R.drawable.ic_profile_female)
                     },
                     contentDescription = null,
@@ -96,7 +96,7 @@ fun CandidateItem(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = stringResource(R.string.name1)+ ": ",
+                            text = stringResource(R.string.name1) + ": ",
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.Black
                         )
@@ -109,7 +109,7 @@ fun CandidateItem(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = stringResource(R.string.roll_no)+ ": ",
+                            text = stringResource(R.string.roll_no) + ": ",
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.Black
                         )

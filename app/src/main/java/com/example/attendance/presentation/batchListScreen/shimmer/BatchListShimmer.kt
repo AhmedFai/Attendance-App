@@ -35,7 +35,7 @@ fun BatchListShimmer() {
         contentPadding = PaddingValues(dimens.spaceM),
         verticalArrangement = Arrangement.spacedBy(dimens.spaceS)
     ) {
-        items(3) {
+        items(10) {
             BatchItemShimmer()
         }
     }

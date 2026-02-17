@@ -7,8 +7,6 @@ import javax.inject.Inject
 class UpdateRegisteredFaceUseCase @Inject constructor(
     private val repository: UpdateRegisteredFaceRepository
 ) {
-
     suspend operator fun invoke(updateRegisteredFaceRequest: UpdateRegisteredFaceRequest) =
         repository.updateRegisteredFace(updateRegisteredFaceRequest)
-
 }

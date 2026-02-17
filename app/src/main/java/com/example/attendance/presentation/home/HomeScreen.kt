@@ -77,7 +77,8 @@ fun HomeScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is HomeUIEvent.ShowToast -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }
@@ -253,22 +254,29 @@ private fun fetchUserEmbeddings(
         launcher.launch(intent)
     } catch (e: Exception) {
         e.printStackTrace()
-        Toast.makeText(context, R.string.fetchEmbeddingsServiceUnavailable, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.fetchEmbeddingsServiceUnavailable, Toast.LENGTH_SHORT)
+            .show()
     }
 }
 
 private fun handleFetchEmbeddingsResult(result: ActivityResult, context: Context) {
-    if (result.resultCode == Activity.RESULT_OK){
+    if (result.resultCode == Activity.RESULT_OK) {
         val status = result.data?.getStringExtra(Constants.RESULT_STATUS) ?: "failure"
         val message = result.data?.getStringExtra(Constants.RESULT_MESSAGE) ?: "Unknown error"
         val fetchedCount = result.data?.getIntExtra("fetched_count", 0) ?: 0
-        when(status){
+        when (status) {
             "success" -> {
-                Toast.makeText(context,  R.string.embeddingsFetched + fetchedCount, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    R.string.embeddingsFetched + fetchedCount,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+
             "partial_success" -> {
                 Toast.makeText(context, "Partially succeeded $message", Toast.LENGTH_SHORT).show()
             }
+
             else -> {
                 Toast.makeText(context, "Failed to fetch embeddings: $message", Toast.LENGTH_SHORT)
                     .show()

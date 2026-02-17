@@ -17,7 +17,7 @@ private val Context.dataStore by preferencesDataStore(Constants.APP_PREFERENCES)
 class AppPreferences(
     private val context: Context
 ) {
-    private object Keys{
+    private object Keys {
         val DOMAIN = stringPreferencesKey(Constants.DOMAIN)
         val USER_ID = stringPreferencesKey(Constants.USER_ID)
         val TOKEN = stringPreferencesKey(Constants.TOKEN)
@@ -33,7 +33,7 @@ class AppPreferences(
             }.getOrDefault(DomainType.RSETI)
         }
 
-    suspend fun saveDomain(domain: DomainType){
+    suspend fun saveDomain(domain: DomainType) {
         context.dataStore.edit {
             it[Keys.DOMAIN] = domain.name
         }

@@ -38,7 +38,7 @@ fun CandidateListShimmer() {
         contentPadding = PaddingValues(dimens.spaceM),
         verticalArrangement = Arrangement.spacedBy(dimens.spaceS)
     ) {
-        items(4) {
+        items(10) {
             CandidateItemShimmer()
         }
     }

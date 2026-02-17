@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit
 object AppUtil {
 
     @SuppressLint("HardwareIds")
-    fun getAndroidId(context: Context) : String{
+    fun getAndroidId(context: Context): String {
 
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }

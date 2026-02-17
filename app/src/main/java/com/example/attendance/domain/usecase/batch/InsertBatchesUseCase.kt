@@ -8,7 +8,7 @@ class InsertBatchesUseCase @Inject constructor(
     private val repository: BatchRepository
 ) {
 
-    suspend operator fun invoke(batches: List<BatchEntity>){
+    suspend operator fun invoke(batches: List<BatchEntity>) {
         repository.insertBatches(batches)
     }
 

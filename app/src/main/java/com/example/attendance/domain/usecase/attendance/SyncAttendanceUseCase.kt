@@ -9,7 +9,7 @@ class SyncAttendanceUseCase @Inject constructor(
     private val repository: SyncAttendanceRepository
 ) {
 
-    suspend operator fun invoke() : SyncAttendanceResult{
+    suspend operator fun invoke(): SyncAttendanceResult {
         return repository.syncPendingAttendances()
     }
 

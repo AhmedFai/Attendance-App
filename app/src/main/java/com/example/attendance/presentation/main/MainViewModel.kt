@@ -34,6 +34,7 @@ class MainViewModel @Inject constructor(
             getDomain().collect { domain = it }
         }
     }
+
     private val _uiEvent = MutableSharedFlow<MainUiEvent>()
     val uiEvent: SharedFlow<MainUiEvent> = _uiEvent
 

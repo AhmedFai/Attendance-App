@@ -13,6 +13,5 @@ fun Wrapped.toBatchEntity(): BatchEntity {
         latitude = latitude.toDouble(),
         longitude = longitude.toDouble(),
         radius = radius
-
     )
 }

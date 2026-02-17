@@ -33,7 +33,7 @@ import com.example.attendance.ui.theme.dimens
 @Composable
 fun HomeShimmer(
     viewModel: HomeViewModel = hiltViewModel()
-){
+) {
     val dimens = MaterialTheme.dimens
 
     Column(

@@ -46,7 +46,7 @@ fun navGraph(
                 onCandidateList = { batchId ->
                     navController.navigate(Route.CandidateListScreen.withBatchId(batchId))
                 },
-                onMarkAttendance = { batchId->
+                onMarkAttendance = { batchId ->
                     navController.navigate(
                         Route.AttendanceScreen.withArgs(
                             userType = "FACULTY",
@@ -77,7 +77,7 @@ fun navGraph(
             )
         }
 
-        composable(route = "attendanceScreen/{userType}/{userId}/{batchId}") { backStackEntry->
+        composable(route = "attendanceScreen/{userType}/{userId}/{batchId}") { backStackEntry ->
             val userType =
                 backStackEntry.arguments?.getString("userType") ?: return@composable
             val userId =

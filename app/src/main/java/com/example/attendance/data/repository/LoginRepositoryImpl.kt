@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val api: LoginApiService,
     private val prefs: AppPreferences
-): LoginRepository {
+) : LoginRepository {
     override suspend fun login(loginRequest: LoginRequest): Flow<ApiState<LoginResponse>> {
         return flow {
             emit(ApiState.Loading())
@@ -30,13 +30,13 @@ class LoginRepositoryImpl @Inject constructor(
                 }
 
                 val fullUrl = baseUrl + "login"
-                val response = api.login(fullUrl,loginRequest)
-                if (response.responseCode == 200){
+                val response = api.login(fullUrl, loginRequest)
+                if (response.responseCode == 200) {
                     emit(ApiState.Success(response))
-                }else{
+                } else {
                     emit(ApiState.Error(response.responseDesc, null))
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 emit(ApiState.Exception(e, null))
             }

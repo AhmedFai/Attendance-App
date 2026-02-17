@@ -6,9 +6,7 @@ import com.example.attendance.util.ApiState
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
-
     suspend fun login(
         loginRequest: LoginRequest
     ): Flow<ApiState<LoginResponse>>
-
 }

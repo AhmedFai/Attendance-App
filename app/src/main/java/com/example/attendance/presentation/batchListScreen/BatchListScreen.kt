@@ -70,13 +70,15 @@ fun BatchListScreen(
             onBack = onBack
         )
 
-        when{
+        when {
             state.isLoading -> {
                 BatchListShimmer()
             }
+
             state.batches.isEmpty() -> {
                 Log.e("BatchList", "BatchListScreen: Empty")
             }
+
             else -> {
                 LazyColumn(
                     modifier = Modifier
@@ -104,7 +106,7 @@ fun BatchListScreen(
             onDismiss = {
                 showAttendanceSheet = false
                 selectedBatchId = null
-                        },
+            },
             onCandidateAttendance = {
                 showAttendanceSheet = false
                 selectedScreen = "candidateList"

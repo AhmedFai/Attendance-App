@@ -52,13 +52,13 @@ class AttendanceViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun loadUser(userType: String, userId: String, batchId: Long){
+    fun loadUser(userType: String, userId: String, batchId: Long) {
         Log.e("USER", "USER_ID: $userId, USER_TYPE: $userType")
-       // if (_uiState.hasLoadedOnce) return
+        // if (_uiState.hasLoadedOnce) return
         viewModelScope.launch {
             _uiState = _uiState.copy(isLoading = true)
 
-            when(userType){
+            when (userType) {
                 "FACULTY" -> {
                     val faculty = getFacultyProfileUseCase()
 
@@ -77,16 +77,17 @@ class AttendanceViewModel @Inject constructor(
                         )
                     }
                 }
+
                 "CANDIDATE" -> {
                     val candidate = getCandidateByIdUseCase(userId)
-                    if (candidate != null){
-                       _uiState = _uiState.copy(
+                    if (candidate != null) {
+                        _uiState = _uiState.copy(
                             candidate = candidate,
                             isLoading = false
                         )
                         loadBatchData(batchId)
                         loadTodayAttendance(userId, batchId, "CANDIDATE")
-                    }else {
+                    } else {
                         _uiState.copy(
                             isLoading = false,
                             error = "Candidate not found"
@@ -97,15 +98,15 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
-   private fun loadBatchData(batchId: Long){
+    private fun loadBatchData(batchId: Long) {
         viewModelScope.launch {
             val batch = getBatchByIdUseCase(batchId)
-            _uiState = if (batch != null){
+            _uiState = if (batch != null) {
                 _uiState.copy(
                     isLoading = false,
                     batch = batch
                 )
-            }else {
+            } else {
                 _uiState.copy(
                     isLoading = false,
                     error = "Batch not found"
@@ -120,7 +121,7 @@ class AttendanceViewModel @Inject constructor(
         userId: String,
         batchId: Long,
         userType: String
-    ){
+    ) {
         viewModelScope.launch {
             val todayDate = java.time.LocalDate.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"))

@@ -5,7 +5,5 @@ import com.example.attendance.util.ApiState
 import kotlinx.coroutines.flow.Flow
 
 interface CandidateMasterDataRepository {
-
-    fun getUserMasterData() : Flow<ApiState<CandidateMasterDataResponse>>
-
+    fun getUserMasterData(): Flow<ApiState<CandidateMasterDataResponse>>
 }

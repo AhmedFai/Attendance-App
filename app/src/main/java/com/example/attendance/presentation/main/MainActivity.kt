@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WorkManagerHelper.enqueuePeriodic(this)
-       // WindowCompat.setDecorFitsSystemWindows(window, false)
+        // WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
 //        installSplashScreen().apply {
 //            setKeepOnScreenCondition{
@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
                 val context = this@MainActivity
                 val startDestination = viewModel.uiState.collectAsState().value
                 LaunchedEffect(Unit) {
-                    viewModel.uiEvent.collect { event->
-                        when(event){
+                    viewModel.uiEvent.collect { event ->
+                        when (event) {
                             is MainUiEvent.ShowToast -> {
                                 Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                             }

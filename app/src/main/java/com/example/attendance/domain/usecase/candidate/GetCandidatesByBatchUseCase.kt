@@ -9,7 +9,7 @@ class GetCandidatesByBatchUseCase @Inject constructor(
     private val repository: CandidateRepository
 ) {
 
-    operator fun invoke(batchId: Long): Flow<List<CandidateEntity>>{
+    operator fun invoke(batchId: Long): Flow<List<CandidateEntity>> {
         return repository.getCandidatesByBatch(batchId)
     }
 

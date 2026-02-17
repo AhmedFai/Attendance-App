@@ -8,6 +8,6 @@ class GetCandidatesListUseCase @Inject constructor(
     private val repository: CandidateRepository
 ) {
     suspend operator fun invoke(): List<String> {
-       return repository.getAllCandidates().map { it.candidateId }
+        return repository.getAllCandidates().map { it.candidateId }
     }
 }

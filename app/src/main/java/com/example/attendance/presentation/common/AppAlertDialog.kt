@@ -68,19 +68,19 @@ fun AppAlertDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun AlertDialogPreview(){
+fun AlertDialogPreview() {
 
-            AppAlertDialog(
-                config = AppDialogConfig(
-                    domainType = DomainType.DDUGKY,
-                    title = "Alert",
-                    message = "Alert dialog preview",
-                    positiveText = "OK",
-                    negativeText = "Cancel",
-                    onPositiveClick = {},
-                    onNegativeClick = {},
-                    onDismiss = {}
-                )
-            )
+    AppAlertDialog(
+        config = AppDialogConfig(
+            domainType = DomainType.DDUGKY,
+            title = "Alert",
+            message = "Alert dialog preview",
+            positiveText = "OK",
+            negativeText = "Cancel",
+            onPositiveClick = {},
+            onNegativeClick = {},
+            onDismiss = {}
+        )
+    )
 
 }

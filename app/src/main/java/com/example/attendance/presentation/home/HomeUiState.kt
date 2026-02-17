@@ -13,5 +13,5 @@ data class HomeUiState(
     val userId: String = "",
     val pendingCount: Int = 0,
     val syncedCount: Int = 0,
-    val candidatesId : List<String> = emptyList()
+    val candidatesId: List<String> = emptyList()
 )

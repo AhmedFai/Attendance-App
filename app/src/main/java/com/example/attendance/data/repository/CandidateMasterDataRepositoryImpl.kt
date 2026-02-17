@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class CandidateMasterDataRepositoryImpl @Inject constructor(
-    private val api : ApiServices,
-    private val prefs : AppPreferences
-) : CandidateMasterDataRepository{
-    override  fun getUserMasterData(): Flow<ApiState<CandidateMasterDataResponse>> {
+    private val api: ApiServices,
+    private val prefs: AppPreferences
+) : CandidateMasterDataRepository {
+    override fun getUserMasterData(): Flow<ApiState<CandidateMasterDataResponse>> {
         return flow {
             emit(ApiState.Loading())
             try {
@@ -28,12 +28,12 @@ class CandidateMasterDataRepositoryImpl @Inject constructor(
                 }
                 val fullUrl = baseUrl + "masterUserData"
                 val response = api.getUserMasterData(fullUrl)
-                if (response.responseCode == 200){
+                if (response.responseCode == 200) {
                     emit(ApiState.Success(response))
-                }else{
+                } else {
                     emit(ApiState.Error(response.responseDesc, null))
                 }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 emit(ApiState.Exception(e, null))
             }

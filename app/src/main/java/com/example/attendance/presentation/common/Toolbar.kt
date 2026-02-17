@@ -37,7 +37,7 @@ fun Toolbar(
     title: String,
     domain: DomainType,
     onBack: () -> Unit
-){
+) {
 
     val dimens = MaterialTheme.dimens
 
@@ -76,7 +76,7 @@ fun Toolbar(
                 .clip(RoundedCornerShape(dimens.spaceXS))
                 .background(Color.White),
             contentAlignment = Alignment.Center,
-        ){
+        ) {
             Image(
                 painter = painterResource(
                     if (domain == DomainType.DDUGKY)

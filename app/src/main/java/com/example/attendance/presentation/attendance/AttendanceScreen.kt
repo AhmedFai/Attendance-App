@@ -24,7 +24,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -185,81 +187,88 @@ fun AttendanceScreen(
             }
 
             else -> {
-                Spacer(Modifier.height(dimens.spaceM))
 
-                // 🔹 CARD
-                Card(
+                Column(
                     modifier = Modifier
-                        .padding(horizontal = dimens.spaceM)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(dimens.radiusM),
-                    elevation = CardDefaults.cardElevation(dimens.spaceXS),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    )
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                 ) {
-
-                    Column(modifier = Modifier.padding(dimens.spaceM)) {
-
-                        // Profile
-                        ProfileSection(
-                            type = userType,
-                            candidate = viewModel.uiState.candidate,
-                            faculty = viewModel.uiState.faculty,
-                            domain = viewModel.domain
+                    Spacer(Modifier.height(dimens.spaceM))
+                    // 🔹 CARD
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = dimens.spaceM)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(dimens.radiusM),
+                        elevation = CardDefaults.cardElevation(dimens.spaceXS),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White
                         )
+                    ) {
 
-                        HorizontalDivider(Modifier.padding(vertical = dimens.spaceM))
+                        Column(modifier = Modifier.padding(dimens.spaceM)) {
 
-                        // Time
-                        TimeSection()
+                            // Profile
+                            ProfileSection(
+                                type = userType,
+                                candidate = viewModel.uiState.candidate,
+                                faculty = viewModel.uiState.faculty,
+                                domain = viewModel.domain
+                            )
 
-                        Spacer(Modifier.height(dimens.spaceM))
+                            HorizontalDivider(Modifier.padding(vertical = dimens.spaceM))
 
-                        // Buttons
-                        AttendanceButtons(
-                            domain = viewModel.domain,
-                            canCheckIn = state.canCheckIn,
-                            canCheckOut = state.canCheckOut,
-                            onCheckIn = {
-                                //viewModel.onCheckIn()
-                                click = "CHECK-IN"
-                                checkForGpsAndLocation(
-                                    context,
-                                    permissionLauncher,
-                                    gpsLauncher,
-                                    fetchEmbeddingsLauncher,
-                                    userId,
-                                    centerLat,
-                                    centerLng,
-                                    radius
-                                )
-                            },
-                            onCheckOut = {
-                                //viewModel.onCheckOut()
-                                click = "CHECK-OUT"
-                                checkForGpsAndLocation(
-                                    context,
-                                    permissionLauncher,
-                                    gpsLauncher,
-                                    fetchEmbeddingsLauncher,
-                                    userId,
-                                    centerLat,
-                                    centerLng,
-                                    radius
-                                )
-                            }
-                        )
+                            // Time
+                            TimeSection()
 
-                        HorizontalDivider(modifier = Modifier.padding(vertical = dimens.spaceM))
+                            Spacer(Modifier.height(dimens.spaceM))
 
-                        // States
-                        AttendanceStats(
-                            checkIn = state.checkInTime,
-                            checkOut = state.checkOutTime,
-                            total = state.totalHours
-                        )
+                            // Buttons
+                            AttendanceButtons(
+                                domain = viewModel.domain,
+                                canCheckIn = state.canCheckIn,
+                                canCheckOut = state.canCheckOut,
+                                onCheckIn = {
+                                    //viewModel.onCheckIn()
+                                    click = "CHECK-IN"
+                                    checkForGpsAndLocation(
+                                        context,
+                                        permissionLauncher,
+                                        gpsLauncher,
+                                        fetchEmbeddingsLauncher,
+                                        userId,
+                                        centerLat,
+                                        centerLng,
+                                        radius
+                                    )
+                                },
+                                onCheckOut = {
+                                    //viewModel.onCheckOut()
+                                    click = "CHECK-OUT"
+                                    checkForGpsAndLocation(
+                                        context,
+                                        permissionLauncher,
+                                        gpsLauncher,
+                                        fetchEmbeddingsLauncher,
+                                        userId,
+                                        centerLat,
+                                        centerLng,
+                                        radius
+                                    )
+                                }
+                            )
+
+                            HorizontalDivider(modifier = Modifier.padding(vertical = dimens.spaceM))
+
+                            // States
+                            AttendanceStats(
+                                checkIn = state.checkInTime,
+                                checkOut = state.checkOutTime,
+                                total = state.totalHours
+                            )
+                        }
                     }
+                    Spacer(Modifier.height(dimens.spaceM))
                 }
             }
         }
@@ -421,7 +430,13 @@ fun checkForGpsAndLocation(
 //                        Toast.LENGTH_LONG
 //                    ).show()
                     if (inside) {
-                        startAuthentication(context, userId, fetchEmbeddingsLauncher, location.latitude, location.longitude)
+                        startAuthentication(
+                            context,
+                            userId,
+                            fetchEmbeddingsLauncher,
+                            location.latitude,
+                            location.longitude
+                        )
                     } else {
                         Toast.makeText(context, R.string.outsideRange, Toast.LENGTH_LONG).show()
                     }
