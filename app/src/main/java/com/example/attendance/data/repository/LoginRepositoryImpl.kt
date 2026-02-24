@@ -8,6 +8,7 @@ import com.example.attendance.domain.model.login.LoginResponse
 import com.example.attendance.domain.repository.LoginRepository
 import com.example.attendance.util.ApiState
 import com.example.attendance.util.Constants
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,10 +32,29 @@ class LoginRepositoryImpl @Inject constructor(
 
                 val fullUrl = baseUrl + "login"
                 val response = api.login(fullUrl, loginRequest)
-                if (response.responseCode == 200) {
-                    emit(ApiState.Success(response))
+                if (response.isSuccessful) {
+                    val body = response.body()
+
+                    if (body?.responseCode == 200) {
+                        emit(ApiState.Success(body))
+                    } else {
+                        emit(ApiState.Error(body?.responseDesc ?: "Unknown error", null))
+                    }
                 } else {
-                    emit(ApiState.Error(response.responseDesc, null))
+                    val errorJson = response.errorBody()?.string()
+
+                    val errorObj = try {
+                        Gson().fromJson(errorJson, LoginResponse::class.java)
+                    } catch (e: Exception) {
+                        null
+                    }
+
+                    emit(
+                        ApiState.Error(
+                            errorObj?.responseDesc ?: response.message(),
+                            null
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
