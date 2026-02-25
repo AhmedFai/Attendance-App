@@ -12,6 +12,10 @@ object Constants {
 
     const val RSETI = "https://kaushal.dord.gov.in/demobackend/rsetiofflineapp/"
 
+//    const val DDUGKY = "https://kaushal.rural.gov.in/backend/ddugkyofflineapp/"
+//
+//    const val RSETI = "https://kaushal.rural.gov.in/backend/rsetiofflineapp/"
+
 
     // Header keys
     const val DDUGKY_AUTH_HEADER = "ddugkyofflineappauth"

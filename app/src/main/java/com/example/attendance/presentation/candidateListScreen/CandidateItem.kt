@@ -100,11 +100,13 @@ fun CandidateItem(
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.Black
                         )
-                        Text(
-                            text = candidate.candidateName,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = Color.Gray
-                        )
+                        candidate.candidateName?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = Color.Gray
+                            )
+                        }
                     }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {

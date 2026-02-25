@@ -1,6 +1,7 @@
 package com.example.attendance.presentation.home
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,6 +16,7 @@ import com.example.attendance.domain.usecase.attendance.ClearAttendanceUseCase
 import com.example.attendance.domain.usecase.attendance.GetPendingCountUseCase
 import com.example.attendance.domain.usecase.attendance.GetSyncedCountUseCase
 import com.example.attendance.domain.usecase.attendance.SyncAttendanceUseCase
+import com.example.attendance.domain.usecase.auth.LogoutAuthUseCase
 import com.example.attendance.domain.usecase.auth.LogoutUseCase
 import com.example.attendance.domain.usecase.batch.ClearBatchUseCase
 import com.example.attendance.domain.usecase.candidate.ClearCandidateUseCase
@@ -23,7 +25,7 @@ import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
 import com.example.attendance.domain.usecase.faculty.ClearFacultyUseCase
 import com.example.attendance.domain.usecase.faculty.GetFacultyProfileUseCase
 import com.example.attendance.presentation.home.HomeUIEvent.*
-import com.example.attendance.util.UiText
+import com.example.attendance.util.ApiState
 import com.example.attendance.util.UiText.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -47,6 +49,7 @@ class HomeViewModel @Inject constructor(
     private val getSyncedCountUseCase: GetSyncedCountUseCase,
     private val getCandidatesListUseCase: GetCandidatesListUseCase,
     private val getSyncAttendanceUseCase: SyncAttendanceUseCase,
+    private val logoutApiUseCase: LogoutAuthUseCase,
     private val networkChecker: NetworkChecker
 ) : ViewModel() {
 
@@ -210,7 +213,7 @@ class HomeViewModel @Inject constructor(
 
         //uiState = uiState.copy(isLoggingOut = true)
 
-//        val result = logoutApiUseCase()   // ⭐ LOGOUT API CALL
+//        val result = logoutApiUseCase()
 //
 //        if (result.isFailure) {
 //            uiState = uiState.copy(isLoggingOut = false)
@@ -220,15 +223,53 @@ class HomeViewModel @Inject constructor(
 //            return
 //        }
 
-        isLoggingOut = true
-        delay(300)
-        clearSession()
-        clearCandidateUseCase()
-        clearBatchUseCase()
-        clearAttendanceUseCase()
-        clearFacultyUseCase()
-        WorkManager.getInstance(context)
-            .cancelUniqueWork("attendance_sync_periodic")
+        logoutApiUseCase().collect { result ->
+            when(result){
+                is ApiState.Loading -> {
+                    uiState = uiState.copy(isSyncing = true)
+                    delay(3000)
+                }
+                is ApiState.Success -> {
+                    uiState = uiState.copy(isSyncing = false)
+                    clearSession()
+                    clearCandidateUseCase()
+                    clearBatchUseCase()
+                    clearAttendanceUseCase()
+                    clearFacultyUseCase()
+
+                    WorkManager.getInstance(context)
+                        .cancelUniqueWork("attendance_sync_periodic")
+
+                    isLoggingOut = true
+                    _uiEvent.emit(
+                        ShowToast(Dynamic(result.data.responseDesc))
+                    )
+                }
+                is ApiState.Error -> {
+                    uiState = uiState.copy(isSyncing = false)
+                    isLoggingOut = false
+                    _uiEvent.emit(
+                        ShowToast(Dynamic(result.message))
+                    )
+                }
+                is ApiState.Exception -> {
+                    uiState = uiState.copy(isSyncing = false)
+                    isLoggingOut = false
+                    _uiEvent.emit(
+                        ShowToast(Dynamic("Something went wrong"))
+                    )
+                }
+            }
+        }
+
+//        delay(300)
+//        clearSession()
+//        clearCandidateUseCase()
+//        clearBatchUseCase()
+//        clearAttendanceUseCase()
+//        clearFacultyUseCase()
+//        WorkManager.getInstance(context)
+//            .cancelUniqueWork("attendance_sync_periodic")
     }
 
 }

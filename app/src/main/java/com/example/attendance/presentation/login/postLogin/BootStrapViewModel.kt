@@ -89,7 +89,7 @@ class BootStrapViewModel @Inject constructor(
                 /* ---------------- BATCH INSERT ---------------- */
 
                 val batches = wrappedList
-                    .map { it.toBatchEntity() } // Batch mapper
+                    .mapNotNull  { it.toBatchEntity() } // Batch mapper
                     .distinctBy { it.batchId }
 
                 Log.e("BootstrapVM", "Batch count = ${batches.size}")
@@ -144,7 +144,7 @@ class BootStrapViewModel @Inject constructor(
 
                 val faculties = result.data
                     .wrappedList
-                    .map { it.toBatchEntity() }
+                    .mapNotNull { it.toBatchEntity() }
 
                 Log.e(
                     "BootstrapVM",

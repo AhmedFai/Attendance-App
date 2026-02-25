@@ -71,9 +71,9 @@ fun ProfileSection(
             Text(
                 text =
                     if (type == "CANDIDATE")
-                        candidate!!.candidateName
+                        candidate?.candidateName.orEmpty()
                     else
-                        faculty!!.facultyName,
+                        faculty?.facultyName.orEmpty(),
                 style = MaterialTheme.typography.titleMedium
             )
 

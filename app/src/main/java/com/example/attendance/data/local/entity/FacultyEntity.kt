@@ -9,13 +9,13 @@ import androidx.room.PrimaryKey
 )
 data class FacultyEntity(
     val loginId: String,
-    val facultyName: String,
-    val emailId: String,
-    val mobileNo: String,
-    val gender: String,
-    val dob: String,
+    val facultyName: String?,
+    val emailId: String?,
+    val mobileNo: String?,
+    val gender: String?,
+    val dob: String?,
     val batchId: Long,
-    val batchRegNo: String,
-    val startDate: String,
-    val endDate: String
+    val batchRegNo: String?,
+    val startDate: String?,
+    val endDate: String?
 )

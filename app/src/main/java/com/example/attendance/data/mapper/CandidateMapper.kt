@@ -5,9 +5,9 @@ import com.example.attendance.domain.model.candidateMasterData.Wrapped
 
 fun Wrapped.toCandidateEntity(): CandidateEntity {
     return CandidateEntity(
-        candidateId = candidateId,
-        batchId = batchId.toLong(),
-        candidateName = candidateName,
+        candidateId = candidateId ?: "UNKNOWN_${batchId ?: 0}",
+        batchId = batchId?.toLong() ?: 0L,
+        candidateName = candidateName ?: "N/A",
         candidateEmail = emailId,
         rollNo = rollNo,
         mobileNo = mobileNo,

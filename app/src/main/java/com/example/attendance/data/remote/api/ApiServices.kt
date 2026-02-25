@@ -1,6 +1,7 @@
 package com.example.attendance.data.remote.api
 
 import com.example.attendance.domain.model.AttendanceResponse
+import com.example.attendance.domain.model.LogoutResponse
 import com.example.attendance.domain.model.candidateAttendanceData.CandidateAttendanceRequest
 import com.example.attendance.domain.model.candidateMasterData.CandidateMasterDataResponse
 import com.example.attendance.domain.model.facultyAttendanceData.FacultyAttendanceRequest
@@ -42,4 +43,9 @@ interface ApiServices {
         @Url fullUrl: String,
         @Body body: UpdateRegisteredFaceRequest
     ): UpdateRegisteredFaceResponse
+
+    @POST
+    suspend fun logout(
+        @Url fullUrl: String
+    ): Response<LogoutResponse>
 }

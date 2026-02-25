@@ -24,9 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
@@ -35,9 +33,9 @@ import com.example.attendance.ui.theme.dimens
 @Composable
 fun ProfileCard(
     domain: DomainType,
-    userName: String,
-    email: String,
-    gender: String,
+    userName: String?,
+    email: String?,
+    gender: String?,
     onLogout: () -> Unit
 ) {
 
@@ -78,14 +76,18 @@ fun ProfileCard(
                     .padding(end = 5.dp)
                     .weight(1f)
             ) {
-                Text(
-                    text = userName,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = email,
-                    style = MaterialTheme.typography.labelMedium
-                )
+                userName?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+                email?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
 
             Button(

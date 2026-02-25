@@ -7,9 +7,9 @@ data class HomeUiState(
     val showLogoutDialog: Boolean = false,
     val showSyncDialog: Boolean = false,
 
-    val userName: String = "",
-    val email: String = "",
-    val gender: String = "",
+    val userName: String? = "",
+    val email: String? = "",
+    val gender: String? = "",
     val userId: String = "",
     val pendingCount: Int = 0,
     val syncedCount: Int = 0,

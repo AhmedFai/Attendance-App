@@ -96,12 +96,12 @@ fun AttendanceScreen(
         viewModel.loadUser(userType, userId, batchId)
     }
     // 🔹 Dummy geofence data (facility location)
-    val centerLat = "28.6276".toDouble()
-    val centerLng = "77.2205".toDouble()
-    val radius = 500f
-//    val centerLat = bath?.latitude
-//    val centerLng = bath?.longitude
-//    val radius = bath?.radius?.toFloat()
+//    val centerLat = "28.6276".toDouble()
+//    val centerLng = "77.2205".toDouble()
+//    val radius = 500f
+    val centerLat = state.batch?.latitude
+    val centerLng = state.batch?.longitude
+    val radius = state.batch?.radius?.toFloat()
     // 🔹 Permission launcher
     permissionLauncher =
         rememberLauncherForActivityResult(
@@ -292,6 +292,7 @@ private fun startAuthentication(
     val intent = Intent(context, AuthenticationActivity::class.java).apply {
         putExtra(Constants.EXTRA_CLIENT_ID, Constants.YOUR_CLIENT_ID)
         putExtra(Constants.EXTRA_CALL_TYPE, Constants.CALL_TYPE_LOGIN)
+        //putExtra(Constants.EXTRA_USER_ID, userId)
         putExtra(Constants.EXTRA_USER_ID, "FAIFAI")
         putExtra("captured_lat", capturedLat)
         putExtra("captured_lng", capturedLng)
@@ -348,21 +349,21 @@ private fun handleAuthenticationResult(
 fun isInsideGeofence(
     currentLat: Double,
     currentLng: Double,
-    centerLat: Double,
-    centerLng: Double,
-    radiusMeters: Float
+    centerLat: Double?,
+    centerLng: Double?,
+    radiusMeters: Float?
 ): Boolean {
     val result = FloatArray(1)
 
     android.location.Location.distanceBetween(
         currentLat,
         currentLng,
-        centerLat,
-        centerLng,
+        centerLat!!,
+        centerLng!!,
         result
     )
 
-    return result[0] <= radiusMeters
+    return result[0] <= radiusMeters!!
 }
 
 fun checkForGpsAndLocation(
@@ -371,9 +372,9 @@ fun checkForGpsAndLocation(
     gpsLauncher: ActivityResultLauncher<IntentSenderRequest>,
     fetchEmbeddingsLauncher: ActivityResultLauncher<Intent>,
     userId: String,
-    centerLat: Double,
-    centerLng: Double,
-    radius: Float
+    centerLat: Double?,
+    centerLng: Double?,
+    radius: Float?
 ) {
     // STEP 1 — Permission check
     val permission = ContextCompat.checkSelfPermission(
