@@ -24,7 +24,16 @@ android {
 
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -160,5 +169,8 @@ dependencies {
     // Google / Material Design
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
 
 }

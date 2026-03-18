@@ -19,6 +19,7 @@ import com.example.attendance.domain.usecase.attendance.SyncAttendanceUseCase
 import com.example.attendance.domain.usecase.auth.LogoutAuthUseCase
 import com.example.attendance.domain.usecase.auth.LogoutUseCase
 import com.example.attendance.domain.usecase.batch.ClearBatchUseCase
+import com.example.attendance.domain.usecase.batch.GetCandidateIdsByBatchUseCase
 import com.example.attendance.domain.usecase.candidate.ClearCandidateUseCase
 import com.example.attendance.domain.usecase.candidate.GetCandidatesListUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
@@ -50,7 +51,8 @@ class HomeViewModel @Inject constructor(
     private val getCandidatesListUseCase: GetCandidatesListUseCase,
     private val getSyncAttendanceUseCase: SyncAttendanceUseCase,
     private val logoutApiUseCase: LogoutAuthUseCase,
-    private val networkChecker: NetworkChecker
+    private val networkChecker: NetworkChecker,
+    private val getCandidateIdsByBatchUseCase: GetCandidateIdsByBatchUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf(HomeUiState())
@@ -270,6 +272,14 @@ class HomeViewModel @Inject constructor(
 //        clearFacultyUseCase()
 //        WorkManager.getInstance(context)
 //            .cancelUniqueWork("attendance_sync_periodic")
+    }
+
+    fun getCandidateIdsForBatch(batchId: Long, onResult: (List<String>) -> Unit) {
+        viewModelScope.launch {
+            getCandidateIdsByBatchUseCase(batchId).collect { candidates ->
+                onResult(candidates)
+            }
+        }
     }
 
 }

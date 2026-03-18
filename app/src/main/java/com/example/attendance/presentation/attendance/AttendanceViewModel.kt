@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.attendance.R
 import com.example.attendance.data.local.entity.AttendanceEntity
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.domain.usecase.attendance.GetCandidateByIdUseCase
@@ -20,6 +21,7 @@ import com.example.attendance.domain.usecase.attendance.MarkCheckOutUseCase
 import com.example.attendance.domain.usecase.batch.GetBatchByIdUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
 import com.example.attendance.domain.usecase.faculty.GetFacultyProfileUseCase
+import com.example.attendance.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -73,7 +75,7 @@ class AttendanceViewModel @Inject constructor(
                     } else {
                         _uiState = _uiState.copy(
                             isLoading = false,
-                            error = "Faculty not found"
+                            error = UiText.StringRes(R.string.facultyNotFound).toString()
                         )
                     }
                 }
@@ -90,7 +92,7 @@ class AttendanceViewModel @Inject constructor(
                     } else {
                         _uiState.copy(
                             isLoading = false,
-                            error = "Candidate not found"
+                            error = UiText.StringRes(R.string.candidateNotFound).toString()
                         )
                     }
                 }
@@ -109,7 +111,7 @@ class AttendanceViewModel @Inject constructor(
             } else {
                 _uiState.copy(
                     isLoading = false,
-                    error = "Batch not found"
+                    error = UiText.StringRes(R.string.batchNotFound).toString()
                 )
             }
             Log.e("BATCH_ID", batch?.batchId.toString())
@@ -227,10 +229,13 @@ class AttendanceViewModel @Inject constructor(
 
             val duration = java.time.Duration.between(inTime, outTime)
 
-            val hours = duration.toHours()
-            val minutes = duration.toMinutes() % 60
+            val seconds = duration.seconds
 
-            val totalHours = String.format("%02d:%02d", hours, minutes)
+            val hours = seconds / 3600
+            val minutes = (seconds % 3600) / 60
+            val secs = seconds % 60
+
+            val totalTime = String.format("%02d:%02d:%02d", hours, minutes, secs)
 
             markCheckOutUseCase(
                 userId,
@@ -238,7 +243,7 @@ class AttendanceViewModel @Inject constructor(
                 batchId,
                 currentDate,
                 formattedOut,
-                totalHours
+                totalTime
             )
             _uiState = _uiState.copy(
                 showSuccessSheet = true,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Attendance" parent="android:Theme.Material.Light.NoActionBar">
         <!--        <item name="android:windowTranslucentStatus">true</item>-->
         <!--        <item name="android:windowTranslucentNavigation">true</item>-->
@@ -7,7 +7,7 @@
 
 
     <style name="Theme.Material3.DayNight.NoActionBar"
-        parent="Theme.Material3.DayNight.NoActionBar" />
+        parent="Theme.Material3.DayNight.NoActionBar" tools:ignore="ResourceCycle" />
 
     <style name="Theme.Attendance.AppCompat" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- optional -->

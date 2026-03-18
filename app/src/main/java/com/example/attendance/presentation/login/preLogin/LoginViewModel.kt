@@ -142,6 +142,7 @@ class LoginViewModel @Inject constructor(
                         if (state.data.faceRegistered == "N") {
                             _loginUiEvent.emit(LoginUiEvent.StartFaceSdk)
                         } else {
+                            _loginUiState.value = LoginUiState(isLoading = true)
                             _loginUiEvent.emit(LoginUiEvent.StartBootStrap)
                         }
                     }

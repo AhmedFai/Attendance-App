@@ -34,6 +34,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -61,22 +62,76 @@ object AppModule {
     @Provides
     @Singleton
     @PublicClient
-    fun providePublicOkHttp(): OkHttpClient =
-        OkHttpClient.Builder()
+    fun providePublicOkHttp(): OkHttpClient {
+
+        // Demo
+        val certificatePinner = CertificatePinner.Builder()
+            .add(
+                "kaushal.dord.gov.in",
+                "sha256/e6j+An86I+qn81N79S/QicWTVdfjj0YsJo3/k7sq43E="
+            )
+            .add(
+                "kaushal.dord.gov.in",
+                "sha256/a9khL0ZJxlnJyrxstg/P+seiDCm+Yf30srXyFocBaI0="
+            )
+            .build()
+
+//        // Live
+//        val certificatePinner = CertificatePinner.Builder()
+//            .add(
+//                "kaushal.rural.gov.in",
+//                "sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c="
+//            )
+//            .add(
+//                "kaushal.rural.gov.in",
+//                "sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0="
+//            )
+//            .build()
+
+        return OkHttpClient.Builder()
+            .certificatePinner(certificatePinner)
             .addInterceptor(PublicAuthInterceptor())
             .addInterceptor(ApiLoggingInterceptor())
             .build()
+    }
 
     @Provides
     @Singleton
     @SecureClient
     fun provideSecureOkHttp(
         prefs: AppPreferences
-    ): OkHttpClient =
-        OkHttpClient.Builder()
+    ): OkHttpClient {
+
+        // Demo
+        val certificatePinner = CertificatePinner.Builder()
+            .add(
+                "kaushal.dord.gov.in",
+                "sha256/e6j+An86I+qn81N79S/QicWTVdfjj0YsJo3/k7sq43E="
+            )
+            .add(
+                "kaushal.dord.gov.in",
+                "sha256/a9khLOZJxlnJyrxstg/P+seiDCm+Yf3OsrXyFocBaI0="
+            )
+            .build()
+
+//        // Live
+//        val certificatePinner = CertificatePinner.Builder()
+//            .add(
+//                "kaushal.rural.gov.in",
+//                "sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c="
+//            )
+//            .add(
+//                "kaushal.rural.gov.in",
+//                "sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0="
+//            )
+//            .build()
+
+        return OkHttpClient.Builder()
+            .certificatePinner(certificatePinner)
             .addInterceptor(AuthInterceptor(prefs))
             .addInterceptor(ApiLoggingInterceptor())
             .build()
+    }
 
     @Provides
     @Singleton

@@ -96,12 +96,12 @@ fun AttendanceScreen(
         viewModel.loadUser(userType, userId, batchId)
     }
     // 🔹 Dummy geofence data (facility location)
-//    val centerLat = "28.6276".toDouble()
-//    val centerLng = "77.2205".toDouble()
-//    val radius = 500f
-    val centerLat = state.batch?.latitude
-    val centerLng = state.batch?.longitude
-    val radius = state.batch?.radius?.toFloat()
+    val centerLat = "28.6276".toDouble()
+    val centerLng = "77.2205".toDouble()
+    val radius = 500f
+//    val centerLat = state.batch?.latitude
+//    val centerLng = state.batch?.longitude
+//    val radius = state.batch?.radius?.toFloat()
     // 🔹 Permission launcher
     permissionLauncher =
         rememberLauncherForActivityResult(
@@ -301,7 +301,7 @@ private fun startAuthentication(
         launcher.launch(intent)
     } catch (e: Exception) {
         e.printStackTrace()
-        Toast.makeText(context, "Authentication service unavailable", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.authenticationServiceUnavailable), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -339,10 +339,10 @@ private fun handleAuthenticationResult(
                 )
             }
         } else {
-            Toast.makeText(context, "Authentication failed: $message", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.authenticationFailed, message), Toast.LENGTH_SHORT).show()
         }
     } else {
-        Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.authenticationFailed), Toast.LENGTH_SHORT).show()
     }
 }
 

@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
+import okhttp3.OkHttpClient
 import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -44,6 +45,32 @@ object AppUtil {
 
         return (passedDays.toFloat() / totalDays.toFloat())
             .coerceIn(0f, 1f)
+    }
+
+    fun printSslPin() {
+
+        val client = OkHttpClient()
+
+        val request = okhttp3.Request.Builder()
+            .url("https://kaushal.dord.gov.in/")
+            .build()
+
+        Thread {
+            try {
+                val response = client.newCall(request).execute()
+
+                val handshake = response.handshake
+                val certs = handshake?.peerCertificates
+
+                certs?.forEach {
+                    val pin = okhttp3.CertificatePinner.pin(it)
+                    println("SSL PIN 👉 $pin")
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
     }
 
 }

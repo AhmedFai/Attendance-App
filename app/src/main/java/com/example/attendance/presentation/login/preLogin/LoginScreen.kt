@@ -75,10 +75,10 @@ fun LoginScreen(
     bootStrapViewModel: BootStrapViewModel = hiltViewModel()
 ) {
 
-    Log.e("SessionKyaHai?", viewModel.session?.isLoggedIn.toString())
-    Log.e("SessionKyaHaiToken?", viewModel.session?.token.toString())
-    Log.e("DomainKyaHai?", viewModel.selectedDomain.name)
-    Log.e("DomainKyaHaiBuildVersion?", BuildConfig.VERSION_NAME)
+//    Log.e("SessionKyaHai?", viewModel.session?.isLoggedIn.toString())
+//    Log.e("SessionKyaHaiToken?", viewModel.session?.token.toString())
+//    Log.e("DomainKyaHai?", viewModel.selectedDomain.name)
+//    Log.e("DomainKyaHaiBuildVersion?", BuildConfig.VERSION_NAME)
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
     val state by viewModel.loginUiState.collectAsState()
@@ -103,7 +103,7 @@ fun LoginScreen(
                 if (status == "success") {
 
                     Toast
-                        .makeText(context, "✅ Success: $message", Toast.LENGTH_SHORT)
+                        .makeText(context, message, Toast.LENGTH_SHORT)
                         .show()
                     viewModel.onFaceSdkSuccess(
                         UpdateRegisteredFaceRequest(
@@ -121,13 +121,13 @@ fun LoginScreen(
                         )
                     } else {
                         Toast
-                            .makeText(context, "✅ Failure: $message", Toast.LENGTH_SHORT)
+                            .makeText(context, message, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             } else {
                 Toast
-                    .makeText(context, "✅ Failure: $message", Toast.LENGTH_SHORT)
+                    .makeText(context, message, Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -365,6 +365,8 @@ fun LoginScreen(
         }
         when (bootstrapState) {
             is BootstrapState.Error -> {
+                Toast.makeText(context, bootstrapState.message.asString(context), Toast.LENGTH_SHORT)
+                    .show()
                 Log.e("Bootstrap", "Error: ${bootstrapState.message}")
             }
 

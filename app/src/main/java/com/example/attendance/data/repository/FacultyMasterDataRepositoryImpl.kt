@@ -1,5 +1,6 @@
 package com.example.attendance.data.repository
 
+import com.example.attendance.BuildConfig
 import com.example.attendance.data.remote.api.ApiServices
 import com.example.attendance.data.datastore.AppPreferences
 import com.example.attendance.domain.model.DomainType
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
+import javax.net.ssl.SSLPeerUnverifiedException
 
 class FacultyMasterDataRepositoryImpl @Inject constructor(
     private val api: ApiServices,
@@ -34,8 +36,26 @@ class FacultyMasterDataRepositoryImpl @Inject constructor(
                     emit(ApiState.Error(response.responseDesc, null))
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-                emit(ApiState.Exception(e, null))
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace()
+                }
+                when (e) {
+
+                    is SSLPeerUnverifiedException -> {
+                        emit(
+                            ApiState.Error(
+                                "Security issue detected. Please use a secure network.",
+                                null
+                            )
+                        )
+                    }
+
+                    else -> {
+                        emit(
+                            ApiState.Exception(e, null)
+                        )
+                    }
+                }
             }
         }.flowOn(Dispatchers.IO)
     }

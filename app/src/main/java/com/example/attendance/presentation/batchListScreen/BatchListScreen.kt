@@ -1,6 +1,8 @@
 package com.example.attendance.presentation.batchListScreen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import com.example.attendance.presentation.common.Toolbar
 import com.example.attendance.ui.theme.dimens
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BatchListScreen(
     viewModel: BatchListViewModel = hiltViewModel(),

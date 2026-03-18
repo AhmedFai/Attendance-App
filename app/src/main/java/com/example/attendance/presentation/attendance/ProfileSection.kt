@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +29,8 @@ import com.example.attendance.data.local.entity.CandidateEntity
 import com.example.attendance.data.local.entity.FacultyEntity
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.ui.theme.dimens
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun ProfileSection(
@@ -38,6 +41,15 @@ fun ProfileSection(
 ) {
 
     val dimens = MaterialTheme.dimens
+
+    val inputFormatter = remember {
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
+
+    val outputFormatter = remember {
+        SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+    }
+
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -98,14 +110,14 @@ fun ProfileSection(
             mobile = candidate.mobileNo ?: "-",
             email = candidate.candidateEmail ?: "-",
             gender = candidate.gender ?: "-",
-            dob = candidate.dateOfBirth ?: "-"
+            dob = outputFormatter.format(inputFormatter.parse(candidate.dateOfBirth)!!) ?: "-"
         )
 
         faculty != null -> AttendanceUserUi(
             mobile = faculty.mobileNo ?: "-",
             email = faculty.emailId ?: "-",
             gender = faculty.gender ?: "-",
-            dob = faculty.dob ?: "-"
+            dob = outputFormatter.format(inputFormatter.parse(faculty.dob)!!) ?: "-"
         )
 
         else -> null

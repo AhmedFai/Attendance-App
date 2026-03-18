@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.attendance.R
 import com.example.attendance.ui.theme.dimens
 
 @Composable
@@ -45,7 +47,7 @@ fun InfoRow(
         Spacer(Modifier.width(dimens.spaceXS))
 
         Text(
-            text = if (text == "F") "Female" else if (text == "M") "Male" else text,
+            text = if (text == "F") stringResource(R.string.female_) else if (text == "M") stringResource(R.string.male_) else text,
             style = MaterialTheme.typography.titleMedium,
             color = Color.Gray
         )

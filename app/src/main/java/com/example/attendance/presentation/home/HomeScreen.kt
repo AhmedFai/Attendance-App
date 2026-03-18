@@ -3,6 +3,7 @@ package com.example.attendance.presentation.home
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -27,6 +28,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,8 +45,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
+import com.example.attendance.presentation.batchListScreen.BatchListViewModel
 import com.example.attendance.presentation.common.AppAlertDialog
 import com.example.attendance.presentation.common.AppDialogConfig
+import com.example.attendance.presentation.home.bottomSheet.BatchOptionBottomSheet
 import com.example.attendance.presentation.home.shimmer.HomeShimmer
 import com.example.attendance.presentation.login.preLogin.LoginLoadingOverlay
 import com.example.attendance.ui.theme.dimens
@@ -52,6 +59,7 @@ import com.pehchaan.backend.service.AuthenticationActivity
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    batchListViewModel: BatchListViewModel = hiltViewModel(),
     onLogout: () -> Unit,
     onMarkAttendance: () -> Unit
 ) {
@@ -60,6 +68,8 @@ fun HomeScreen(
     val isLoggingOut = viewModel.isLoggingOut
     val dimens = MaterialTheme.dimens
     val context = LocalContext.current
+    var showAttendanceSheet by remember { mutableStateOf(false) }
+    var selectedBatchId by remember { mutableStateOf<Long?>(null) }
     val fetchEmbeddingsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -187,7 +197,7 @@ fun HomeScreen(
                                 onMarkAttendance = { onMarkAttendance() },
                                 onOfflineData = {},
                                 onFetchEmbeddings = {
-                                    fetchUserEmbeddings(context, json, fetchEmbeddingsLauncher)
+                                    showAttendanceSheet = true
                                 },
                                 onSync = {
                                     viewModel.syncAttendance()
@@ -199,6 +209,35 @@ fun HomeScreen(
 
                         }
                     }
+                }
+                if (showAttendanceSheet){
+                    BatchOptionBottomSheet(
+                        batchListViewModel,
+                        onDismiss = {
+                            showAttendanceSheet = false
+                            selectedBatchId = null
+                        },
+                        onClick = { batchId ->
+                            showAttendanceSheet = false
+                            if (batchId == "ALL") {
+                                val json = Gson().toJson(uiState.candidatesId + uiState.userId)
+                                fetchUserEmbeddings(
+                                    context,
+                                    json,
+                                    fetchEmbeddingsLauncher
+                                )
+                            } else {
+                                viewModel.getCandidateIdsForBatch(batchId.toLong()) { ids ->
+                                    val json = Gson().toJson(ids + uiState.userId)
+                                    fetchUserEmbeddings(
+                                        context,
+                                        json,
+                                        fetchEmbeddingsLauncher
+                                    )
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -264,21 +303,22 @@ private fun handleFetchEmbeddingsResult(result: ActivityResult, context: Context
         val status = result.data?.getStringExtra(Constants.RESULT_STATUS) ?: "failure"
         val message = result.data?.getStringExtra(Constants.RESULT_MESSAGE) ?: "Unknown error"
         val fetchedCount = result.data?.getIntExtra("fetched_count", 0) ?: 0
+        Log.e("Fetched Count",fetchedCount.toString())
         when (status) {
             "success" -> {
                 Toast.makeText(
                     context,
-                    R.string.embeddingsFetched + fetchedCount,
+                    R.string.embeddingsFetched,
                     Toast.LENGTH_SHORT
                 ).show()
             }
 
             "partial_success" -> {
-                Toast.makeText(context, "Partially succeeded $message", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.failedToFetchEmbeddings, message), Toast.LENGTH_SHORT).show()
             }
 
             else -> {
-                Toast.makeText(context, "Failed to fetch embeddings: $message", Toast.LENGTH_SHORT)
+                Toast.makeText(context, context.getString(R.string.failedToFetchEmbeddings, message), Toast.LENGTH_SHORT)
                     .show()
             }
         }

@@ -15,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,10 @@ import com.example.attendance.R
 import com.example.attendance.data.local.entity.BatchEntity
 import com.example.attendance.ui.theme.dimens
 import com.example.attendance.util.AppUtil.calculateBatchProgress
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -41,7 +46,16 @@ fun BatchItem(
         endDate = batch.endDate
     )
     val (statusText, statusColor) = getBatchStatus(progress)
+    val inputFormatter = remember {
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
 
+    val outputFormatter = remember {
+        SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+    }
+
+    val startDate = outputFormatter.format(inputFormatter.parse(batch.startDate)!!)
+    val endDate = outputFormatter.format(inputFormatter.parse(batch.endDate)!!)
     Card(
         shape = RoundedCornerShape(dimens.radiusM),
         elevation = CardDefaults.cardElevation(dimens.spaceXS),
@@ -63,7 +77,7 @@ fun BatchItem(
             ) {
 
                 Text(
-                    text = stringResource(R.string.batch_id) + ": " + batch.batchId,
+                    text = stringResource(R.string.batch_id) + ": " + batch.batchRegNo,
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.Gray
                 )
@@ -83,7 +97,7 @@ fun BatchItem(
             )
             Spacer(Modifier.height(dimens.spaceXS))
             Text(
-                text = "${batch.startDate}  →  ${batch.endDate}",
+                text = "$startDate  →  $endDate",
                 style = MaterialTheme.typography.titleMedium
             )
         }

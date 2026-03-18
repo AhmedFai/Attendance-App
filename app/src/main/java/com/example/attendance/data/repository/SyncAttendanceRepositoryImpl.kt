@@ -2,6 +2,7 @@ package com.example.attendance.data.repository
 
 import android.content.Context
 import android.content.SyncResult
+import com.example.attendance.BuildConfig
 import com.example.attendance.data.datastore.AppPreferences
 import com.example.attendance.data.remote.api.ApiServices
 import com.example.attendance.data.remote.api.LoginApiService
@@ -14,10 +15,12 @@ import com.example.attendance.domain.model.facultyAttendanceData.FacultyAttendan
 import com.example.attendance.domain.repository.AttendanceRepository
 import com.example.attendance.domain.repository.NetworkChecker
 import com.example.attendance.domain.repository.SyncAttendanceRepository
+import com.example.attendance.util.ApiState
 import com.example.attendance.util.AppUtil
 import com.example.attendance.util.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.net.ssl.SSLPeerUnverifiedException
 
 class SyncAttendanceRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -113,9 +116,18 @@ class SyncAttendanceRepositoryImpl @Inject constructor(
 
             return SyncAttendanceResult.Success
         } catch (e: Exception) {
-            e.printStackTrace()
-            return SyncAttendanceResult.Error(e.message.toString())
-        }
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace()
+            }
+            return when (e) {
+                is SSLPeerUnverifiedException -> {
+                    SyncAttendanceResult.Error("Security issue detected. Please use a secure network.")
+                }
 
+                else -> {
+                    SyncAttendanceResult.Error(e.message.toString())
+                }
+            }
+        }
     }
 }
