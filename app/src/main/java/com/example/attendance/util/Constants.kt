@@ -7,6 +7,7 @@ object Constants {
     const val USER_ID = "user_id"
     const val TOKEN = "token"
     const val LOGGED_IN = "is_logged_in"
+    const val LANGUAGE_KEY = "app_language"
 
     const val DDUGKY = "https://kaushal.dord.gov.in/demobackend/ddugkyofflineapp/"
     const val RSETI = "https://kaushal.dord.gov.in/demobackend/rsetiofflineapp/"

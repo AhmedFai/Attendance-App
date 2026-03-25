@@ -1,5 +1,7 @@
 package com.example.attendance.presentation.navGraph
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -7,10 +9,12 @@ import androidx.navigation.compose.composable
 import com.example.attendance.presentation.attendance.AttendanceScreen
 import com.example.attendance.presentation.batchListScreen.BatchListScreen
 import com.example.attendance.presentation.candidateListScreen.CandidateListScreen
+import com.example.attendance.presentation.changeLanguageScreen.LanguageScreen
 import com.example.attendance.presentation.home.HomeScreen
 import com.example.attendance.presentation.login.preLogin.LoginScreen
 import com.example.attendance.presentation.login.preLogin.LoginViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun navGraph(
     startDestination: String
@@ -22,7 +26,20 @@ fun navGraph(
         startDestination = startDestination
     ) {
         composable(Route.LoginScreen.routeName) {
-            LoginScreen()
+            LoginScreen(
+                onChangelanguage = {
+                    navController.navigate(Route.LanguageScreen.routeName)
+                },
+            )
+        }
+
+        composable(Route.LanguageScreen.routeName) {
+            LanguageScreen(
+                onBack = { navController.popBackStack() },
+                onLanguageSelected = {
+                    navController.popBackStack() // after change
+                }
+            )
         }
 
         composable(Route.HomeScreen.routeName) {

@@ -72,7 +72,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    bootStrapViewModel: BootStrapViewModel = hiltViewModel()
+    bootStrapViewModel: BootStrapViewModel = hiltViewModel(),
+    onChangelanguage: () -> Unit
 ) {
 
 //    Log.e("SessionKyaHai?", viewModel.session?.isLoggedIn.toString())
@@ -182,6 +183,18 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(dimens.space4XL))
+            Box(
+                modifier = Modifier
+                    .size(dimens.iconL)
+                    .background(Color.LightGray.copy(0.2f), shape = RoundedCornerShape(50))
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.language_icon),
+                    contentDescription = null,
+                    modifier = Modifier.align(Alignment.Center).size(dimens.iconL).clickable { onChangelanguage() },
+                    tint = Color.Black
+                )
+            }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(dimens.spaceXL),
                 verticalAlignment = Alignment.CenterVertically

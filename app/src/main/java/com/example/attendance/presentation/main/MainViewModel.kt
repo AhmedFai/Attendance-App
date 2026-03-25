@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.attendance.R
 import com.example.attendance.domain.model.DomainType
 import com.example.attendance.domain.usecase.auth.GetLoginSessionUseCase
 import com.example.attendance.domain.usecase.domain.GetSelectedDomainUseCase
 import com.example.attendance.domain.usecase.faculty.GetFacultyProfileUseCase
 import com.example.attendance.presentation.navGraph.Route
+import com.example.attendance.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -43,7 +45,14 @@ class MainViewModel @Inject constructor(
             if (session?.isLoggedIn == true) {
                 val faculty = getFacultyProfileUseCase()
                 if (faculty != null) {
-                    _uiEvent.emit(MainUiEvent.ShowToast("Welcome " + getFacultyProfileUseCase()?.facultyName))
+                    _uiEvent.emit(
+                        MainUiEvent.ShowToast(
+                            UiText.StringRes(
+                                resId = R.string.welcome_,
+                                args = listOf(faculty.facultyName ?: "")
+                            )
+                        )
+                    )
                 }
                 Route.HomeScreen.routeName
             } else {

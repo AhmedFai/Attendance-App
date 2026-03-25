@@ -2,6 +2,7 @@ package com.example.attendance.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
@@ -10,6 +11,7 @@ import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 object AppUtil {
 
@@ -71,6 +73,16 @@ object AppUtil {
                 e.printStackTrace()
             }
         }.start()
+    }
+
+    fun changeAppLanguage(context: Context, languageCode: String) {
+        val locale = Locale(languageCode) // For example, "en" for English, "es" for Spanish, etc.
+        Locale.setDefault(locale)
+
+        val configuration = Configuration(context.resources.configuration)
+        configuration.setLocale(locale) // Set the locale for the app
+
+        context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
     }
 
 }

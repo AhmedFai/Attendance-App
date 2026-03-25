@@ -13,6 +13,12 @@ sealed interface Route {
     }
 
     @Serializable
+    object LanguageScreen : Route {
+        override val routeName: String
+            get() = "languageScreen"
+    }
+
+    @Serializable
     object HomeScreen : Route {
         override val routeName: String
             get() = "homeScreen"

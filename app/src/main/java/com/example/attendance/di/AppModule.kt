@@ -18,6 +18,7 @@ import com.example.attendance.data.repository.AuthRepositoryImpl
 import com.example.attendance.data.repository.CandidateMasterDataRepositoryImpl
 import com.example.attendance.data.repository.DomainRepositoryImpl
 import com.example.attendance.data.repository.FacultyMasterDataRepositoryImpl
+import com.example.attendance.data.repository.LanguageRepositoryImpl
 import com.example.attendance.data.repository.LoginRepositoryImpl
 import com.example.attendance.data.repository.LogoutRepositoryImpl
 import com.example.attendance.data.repository.UpdateRegisteredFaceRepositoryImpl
@@ -25,10 +26,13 @@ import com.example.attendance.domain.repository.AuthRepository
 import com.example.attendance.domain.repository.CandidateMasterDataRepository
 import com.example.attendance.domain.repository.DomainRepository
 import com.example.attendance.domain.repository.FacultyMasterDataRepository
+import com.example.attendance.domain.repository.LanguageRepository
 import com.example.attendance.domain.repository.LoginRepository
 import com.example.attendance.domain.repository.LogoutRepository
 import com.example.attendance.domain.repository.NetworkChecker
 import com.example.attendance.domain.repository.UpdateRegisteredFaceRepository
+import com.example.attendance.domain.usecase.changeLanguage.GetLanguageUseCase
+import com.example.attendance.domain.usecase.changeLanguage.SetLanguageUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -257,5 +261,18 @@ object AppModule {
     fun provideAttendanceDao(
         database: AttendanceDatabase
     ): AttendanceDao = database.attendanceDao()
+
+    @Provides
+    @Singleton
+    fun provideLanguageRepository(ds: AppPreferences): LanguageRepository =
+        LanguageRepositoryImpl(ds)
+
+    @Provides
+    fun provideGetLanguageUseCase(repo: LanguageRepository) =
+        GetLanguageUseCase(repo)
+
+    @Provides
+    fun provideSetLanguageUseCase(repo: LanguageRepository) =
+        SetLanguageUseCase(repo)
 
 }

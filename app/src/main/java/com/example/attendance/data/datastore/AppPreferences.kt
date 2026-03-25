@@ -22,6 +22,7 @@ class AppPreferences(
         val USER_ID = stringPreferencesKey(Constants.USER_ID)
         val TOKEN = stringPreferencesKey(Constants.TOKEN)
         val LOGGED_IN = booleanPreferencesKey(Constants.LOGGED_IN)
+        val LANGUAGE_KEY = stringPreferencesKey(Constants.LANGUAGE_KEY)
     }
 
     val domainFlow: Flow<DomainType> =
@@ -42,6 +43,16 @@ class AppPreferences(
     suspend fun getSelectedDomain(): DomainType {
         val domain = context.dataStore.data.first()[Keys.DOMAIN]
         return DomainType.valueOf(domain ?: DomainType.RSETI.name)
+    }
+
+    val getLanguage: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[Keys.LANGUAGE_KEY] ?: "en"
+    }
+
+    suspend fun saveLanguage(code: String) {
+        context.dataStore.edit { prefs ->
+            prefs[Keys.LANGUAGE_KEY] = code
+        }
     }
 
     val sessionFlow: Flow<UserSession?> =
