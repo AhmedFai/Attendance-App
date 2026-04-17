@@ -54,10 +54,10 @@
 -dontwarn retrofit2.**
 -keep class okhttp3.** { *; }
 -dontwarn okhttp3.**
--keep interface com.example.attendance.data.remote.api.** { *; }
+-keep interface com.dord.offlineattendance.data.remote.api.** { *; }
 
 # Gson model classes
--keep class com.example.attendance.domain.model.** { *; }
+-keep class com.dord.offlineattendance.domain.model.** { *; }
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }

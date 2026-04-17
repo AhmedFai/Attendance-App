@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.attendance"
+    namespace = "com.dord.offlineattendance"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.attendance"
+        applicationId = "com.dord.offlineattendance"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

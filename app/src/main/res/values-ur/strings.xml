@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">حاضری</string>
+    <string name="app_name">آف لائن حاضری</string>
     <string name="login_to_your_account">اپنے اکاؤنٹ میں لاگ ان کریں</string>
     <string name="please_sign_in_to_your_account">براہ کرم اپنے اکاؤنٹ میں سائن ان کریں</string>
     <string name="login_id">یوزر آئی ڈی درج کریں</string>

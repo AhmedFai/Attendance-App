@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">హాజరు</string>
+    <string name="app_name">ఆఫ్‌లైన్ హాజరు</string>
     <string name="login_to_your_account">మీ ఖాతాలో లాగిన్ అవ్వండి</string>
     <string name="please_sign_in_to_your_account">దయచేసి మీ ఖాతాలో సైన్ ఇన్ చేయండి</string>
     <string name="login_id">యూజర్ ఐడి నమోదు చేయండి</string>

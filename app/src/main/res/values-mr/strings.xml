@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">उपस्थिती</string>
+    <string name="app_name">ऑफलाइन उपस्थिती</string>
     <string name="login_to_your_account">आपल्या खात्यात लॉगिन करा</string>
     <string name="please_sign_in_to_your_account">कृपया आपल्या खात्यात साइन इन करा</string>
     <string name="login_id">वापरकर्ता आयडी प्रविष्ट करा</string>

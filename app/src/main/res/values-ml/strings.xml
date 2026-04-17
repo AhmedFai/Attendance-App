@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ഹാജർ</string>
+    <string name="app_name">ഓഫ്‌ലൈൻ ഹാജർ</string>
     <string name="login_to_your_account">നിങ്ങളുടെ അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക</string>
     <string name="please_sign_in_to_your_account">ദയവായി നിങ്ങളുടെ അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്യുക</string>
     <string name="login_id">യൂസർ ഐഡി നൽകുക</string>

@@ -1,0 +1,51 @@
+package com.dord.offlineattendance.presentation.navGraph
+
+import kotlinx.serialization.Serializable
+
+sealed interface Route {
+    val routeName: String
+
+    @Serializable
+    object LoginScreen : Route {
+        override val routeName: String
+            get() = "loginScreen"
+    }
+
+    @Serializable
+    object LanguageScreen : Route {
+        override val routeName: String
+            get() = "languageScreen"
+    }
+
+    @Serializable
+    object HomeScreen : Route {
+        override val routeName: String
+            get() = "homeScreen"
+    }
+
+    @Serializable
+    object BatchListScreen : Route {
+        override val routeName: String
+            get() = "batchListScreen"
+    }
+
+    @Serializable
+    object CandidateListScreen : Route {
+        override val routeName: String
+            get() = "candidateListScreen"
+
+        fun withBatchId(batchId: Long): String {
+            return "$routeName/$batchId"
+        }
+    }
+
+    @Serializable
+    object AttendanceScreen : Route {
+        override val routeName: String
+            get() = "attendanceScreen"
+
+        fun withArgs(userType: String, userId: String, batchId: Long): String {
+            return "$routeName/$userType/$userId/$batchId"
+        }
+    }
+}

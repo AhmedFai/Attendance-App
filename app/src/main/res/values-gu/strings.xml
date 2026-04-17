@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">હાજરી</string>
+    <string name="app_name">ઑફલાઇન હાજરી</string>
     <string name="login_to_your_account">તમારા ખાતામાં લોગિન કરો</string>
     <string name="please_sign_in_to_your_account">કૃપા કરીને તમારા ખાતામાં સાઇન ઇન કરો</string>
     <string name="login_id">યૂઝર આઈડી દાખલ કરો</string>

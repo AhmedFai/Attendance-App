@@ -1,0 +1,62 @@
+package com.dord.offlineattendance.data.repository
+
+import com.dord.offlineattendance.BuildConfig
+import com.dord.offlineattendance.data.remote.api.ApiServices
+import com.dord.offlineattendance.data.datastore.AppPreferences
+import com.dord.offlineattendance.domain.model.DomainType
+import com.dord.offlineattendance.domain.model.candidateMasterData.CandidateMasterDataResponse
+import com.dord.offlineattendance.domain.repository.CandidateMasterDataRepository
+import com.dord.offlineattendance.util.ApiState
+import com.dord.offlineattendance.util.Constants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.net.ssl.SSLPeerUnverifiedException
+
+class CandidateMasterDataRepositoryImpl @Inject constructor(
+    private val api: ApiServices,
+    private val prefs: AppPreferences
+) : CandidateMasterDataRepository {
+    override fun getUserMasterData(): Flow<ApiState<CandidateMasterDataResponse>> {
+        return flow {
+            emit(ApiState.Loading())
+            try {
+                val domain = prefs.getSelectedDomain()
+                val baseUrl = when (domain) {
+                    DomainType.RSETI -> Constants.RSETI
+                    DomainType.DDUGKY -> Constants.DDUGKY
+                }
+                val fullUrl = baseUrl + "masterUserData"
+                val response = api.getUserMasterData(fullUrl)
+                if (response.responseCode == 200) {
+                    emit(ApiState.Success(response))
+                } else {
+                    emit(ApiState.Error(response.responseDesc, null))
+                }
+            } catch (e: Exception) {
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace()
+                }
+                when (e) {
+
+                    is SSLPeerUnverifiedException -> {
+                        emit(
+                            ApiState.Error(
+                                "Security issue detected. Please use a secure network.",
+                                null
+                            )
+                        )
+                    }
+
+                    else -> {
+                        emit(
+                            ApiState.Exception(e, null)
+                        )
+                    }
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+}

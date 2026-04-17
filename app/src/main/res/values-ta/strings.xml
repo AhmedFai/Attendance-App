@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">வருகை</string>
+    <string name="app_name">இணையம் இல்லா வருகைப் பதிவு</string>
     <string name="login_to_your_account">உங்கள் கணக்கில் உள்நுழைக</string>
     <string name="please_sign_in_to_your_account">தயவுசெய்து உங்கள் கணக்கில் உள்நுழையவும்</string>
     <string name="login_id">பயனர் ஐடி உள்ளிடவும்</string>
