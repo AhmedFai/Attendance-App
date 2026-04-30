@@ -452,14 +452,14 @@ fun startAuthentication(
             Constants.EXTRA_CALL_TYPE,
             callType
         )
-//        putExtra(
-//            Constants.EXTRA_USER_ID,
-//            userId
-//        )
         putExtra(
             Constants.EXTRA_USER_ID,
-            "FAIFAI"
+            userId
         )
+//        putExtra(
+//            Constants.EXTRA_USER_ID,
+//            "FAIFAI"
+//        )
 
         if (callType == Constants.CALL_TYPE_REGISTRATION) {
             putExtra(
