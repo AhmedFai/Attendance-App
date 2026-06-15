@@ -90,7 +90,7 @@ fun AttendanceScreen(
         //checkForGpsAndLocation(context,permissionLauncher, gpsLauncher, fetchEmbeddingsLauncher, centerLat, centerLng, radius)
         viewModel.loadUser(userType, userId, batchId)
     }
-    // 🔹 Dummy geofence data (facility location)
+    // Todo: Demo
 //    val centerLat = "28.6276".toDouble()
 //    val centerLng = "77.2205".toDouble()
 //    val radius = 500f
@@ -226,30 +226,39 @@ fun AttendanceScreen(
                                 onCheckIn = {
                                     //viewModel.onCheckIn()
                                     click = "CHECK-IN"
-                                    checkForGpsAndLocation(
-                                        context,
-                                        permissionLauncher,
-                                        gpsLauncher,
-                                        fetchEmbeddingsLauncher,
-                                        userId,
-                                        centerLat,
-                                        centerLng,
-                                        radius
-                                    )
+                                    if (userId == "DEMO_USER_ID" ||
+                                        userId == "CAND_01") {
+                                        // Seedha ViewModel call kar, SDK skip ho gaya
+                                        viewModel.markCheckIn(
+                                            userId = userId,
+                                            userType = userType,
+                                            batchId = batchId,
+                                            batchRegNo = state.batch?.batchRegNo ?: "",
+                                            latitude = 0.0,
+                                            longitude = 0.0
+                                        )
+                                    } else {
+                                        // Real flow: Location check ke baad SDK khulega
+                                        checkForGpsAndLocation(
+                                            context, permissionLauncher, gpsLauncher, fetchEmbeddingsLauncher,
+                                            userId, centerLat, centerLng, radius
+                                        )
+                                    }
                                 },
                                 onCheckOut = {
                                     //viewModel.onCheckOut()
                                     click = "CHECK-OUT"
-                                    checkForGpsAndLocation(
-                                        context,
-                                        permissionLauncher,
-                                        gpsLauncher,
-                                        fetchEmbeddingsLauncher,
-                                        userId,
-                                        centerLat,
-                                        centerLng,
-                                        radius
-                                    )
+                                    if (userId == "DEMO_USER_ID" ||
+                                        userId == "CAND_01") {
+                                        // Seedha ViewModel call kar, SDK skip ho gaya
+                                        viewModel.markCheckOut(userId = userId, batchId = batchId, userType = userType)
+                                    } else {
+                                        // Real flow: Location check ke baad SDK khulega
+                                        checkForGpsAndLocation(
+                                            context, permissionLauncher, gpsLauncher, fetchEmbeddingsLauncher,
+                                            userId, centerLat, centerLng, radius
+                                        )
+                                    }
                                 }
                             )
 
@@ -288,6 +297,7 @@ private fun startAuthentication(
         putExtra(Constants.EXTRA_CLIENT_ID, Constants.YOUR_CLIENT_ID)
         putExtra(Constants.EXTRA_CALL_TYPE, Constants.CALL_TYPE_LOGIN)
         putExtra(Constants.EXTRA_USER_ID, userId)
+        //Todo: Demo
         //putExtra(Constants.EXTRA_USER_ID, "FAIFAI")
         putExtra("captured_lat", capturedLat)
         putExtra("captured_lng", capturedLng)

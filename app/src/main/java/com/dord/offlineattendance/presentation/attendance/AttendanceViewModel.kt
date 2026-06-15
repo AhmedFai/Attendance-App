@@ -193,7 +193,7 @@ class AttendanceViewModel @Inject constructor(
                 address = null, // later
                 capturedLatitude = latitude,
                 capturedLongitude = longitude,
-                syncStatus = "PENDING"
+                syncStatus = if (userId == "DEMO_USER_ID") "SYNCED" else "PENDING"
             )
             Log.e("CHECK_IN", entity.toString())
             markCheckInUseCase(entity)

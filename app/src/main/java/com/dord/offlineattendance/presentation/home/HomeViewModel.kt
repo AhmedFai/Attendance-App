@@ -15,6 +15,7 @@ import com.dord.offlineattendance.domain.usecase.attendance.ClearAttendanceUseCa
 import com.dord.offlineattendance.domain.usecase.attendance.GetPendingCountUseCase
 import com.dord.offlineattendance.domain.usecase.attendance.GetSyncedCountUseCase
 import com.dord.offlineattendance.domain.usecase.attendance.SyncAttendanceUseCase
+import com.dord.offlineattendance.domain.usecase.auth.GetLoginSessionUseCase
 import com.dord.offlineattendance.domain.usecase.auth.LogoutAuthUseCase
 import com.dord.offlineattendance.domain.usecase.auth.LogoutUseCase
 import com.dord.offlineattendance.domain.usecase.batch.ClearBatchUseCase
@@ -32,6 +33,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -51,7 +53,8 @@ class HomeViewModel @Inject constructor(
     private val getSyncAttendanceUseCase: SyncAttendanceUseCase,
     private val logoutApiUseCase: LogoutAuthUseCase,
     private val networkChecker: NetworkChecker,
-    private val getCandidateIdsByBatchUseCase: GetCandidateIdsByBatchUseCase
+    private val getCandidateIdsByBatchUseCase: GetCandidateIdsByBatchUseCase,
+    private val getSessionUseCase: GetLoginSessionUseCase,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(HomeUiState())
@@ -167,6 +170,12 @@ class HomeViewModel @Inject constructor(
     fun confirmLogout() =
         viewModelScope.launch {
             uiState = uiState.copy(showLogoutDialog = false)
+            val session = getSessionUseCase().first()
+
+            if (session?.userId == "DEMO_USER_ID") {
+                performLogout()
+                return@launch
+            }
             if (!networkChecker.isConnected()) {
                 _uiEvent.emit(
                     ShowToast(StringRes(R.string.netRequired))
@@ -223,6 +232,28 @@ class HomeViewModel @Inject constructor(
 //            )
 //            return
 //        }
+
+        val session = getSessionUseCase().first()
+
+        if (session?.userId == "DEMO_USER_ID") {
+
+            clearSession()
+            clearCandidateUseCase()
+            clearBatchUseCase()
+            clearAttendanceUseCase()
+            clearFacultyUseCase()
+
+            WorkManager.getInstance(context)
+                .cancelUniqueWork("attendance_sync_periodic")
+
+            isLoggingOut = true
+
+            _uiEvent.emit(
+                ShowToast(Dynamic("Logged out successfully"))
+            )
+
+            return
+        }
 
         logoutApiUseCase().collect { result ->
             when(result){

@@ -140,7 +140,11 @@ fun LoginScreen(
                 }
 
                 is LoginUiEvent.StartBootStrap -> {
-                    bootStrapViewModel.startBootstrap()
+                    bootStrapViewModel.startBootstrap(isDemo = false)
+                }
+
+                is LoginUiEvent.StartBootStrapDemo -> {
+                    bootStrapViewModel.startBootstrap(isDemo = true)
                 }
 
                 LoginUiEvent.StartFaceSdk -> {
@@ -456,6 +460,7 @@ fun startAuthentication(
             Constants.EXTRA_USER_ID,
             userId
         )
+        // Todo: Demo
 //        putExtra(
 //            Constants.EXTRA_USER_ID,
 //            "FAIFAI"

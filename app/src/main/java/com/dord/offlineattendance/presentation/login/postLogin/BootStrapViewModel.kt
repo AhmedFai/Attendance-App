@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dord.offlineattendance.data.local.entity.BatchEntity
+import com.dord.offlineattendance.data.local.entity.CandidateEntity
+import com.dord.offlineattendance.data.local.entity.FacultyEntity
 import com.dord.offlineattendance.data.mapper.toBatchEntity
 import com.dord.offlineattendance.data.mapper.toCandidateEntity
 import com.dord.offlineattendance.domain.repository.NetworkChecker
@@ -38,11 +41,12 @@ class BootStrapViewModel @Inject constructor(
     private val saveSessionUseCase: SaveLoginSessionUseCase,
     private val markLoggedInUseCase: MarkLoggedInUseCase,
 ) : ViewModel() {
-
+    private var isDemoMode = false
     var state by mutableStateOf<BootstrapState>(BootstrapState.Idle)
         private set
 
-    fun startBootstrap() {
+    fun startBootstrap(isDemo: Boolean = false) {
+        isDemoMode = isDemo
         viewModelScope.launch {
             if (!networkChecker.isConnected()) {
                 state =
@@ -50,6 +54,15 @@ class BootStrapViewModel @Inject constructor(
                 return@launch
             }
             state = BootstrapState.Loading
+
+            if (isDemoMode) {
+                Log.e("BootstrapDebug", "Bypass Forced via Flag!")
+                insertDummyDataForReviewer()
+                markLoggedInUseCase()
+                state = BootstrapState.Success
+                return@launch
+            }
+
             try {
                 supervisorScope {
 
@@ -169,6 +182,43 @@ class BootStrapViewModel @Inject constructor(
 
             else -> Unit
         }
+    }
+
+    private suspend fun insertDummyDataForReviewer() {
+        // 1. Insert Batch
+        val batch =
+            BatchEntity(1, "Demo Batch", "REG123", "2026-01-01", "2026-12-31", 0.0, 0.0, 100)
+        insertBatchesUseCase(listOf(batch))
+
+        // 2. Insert Faculty
+        val faculty = FacultyEntity(
+            "DEMO_USER_ID",
+            "Demo Faculty",
+            "demo@nic.in",
+            "9999999999",
+            "M",
+            "1990-01-01",
+            1,
+            "REG123",
+            "2026-01-01",
+            "2026-12-31"
+        )
+        insertFacultiesUseCase(listOf(faculty))
+
+        // 3. Insert Candidate
+        val candidate = CandidateEntity(
+            "CAND_01",
+            1,
+            "Reviewer Student",
+            "student@nic.in",
+            1,
+            "8888888888",
+            "M",
+            "2000-01-01",
+            "New Delhi",
+            "000000000000"
+        )
+        insertCandidatesUseCase(listOf(candidate))
     }
 
 //    private suspend fun markBootstrapCompleted() {
