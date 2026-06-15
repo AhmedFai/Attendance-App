@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Offline Attendance</string>
+    <string name="app_name">RSETI Offline</string>
     <string name="login_to_your_account">Login to your account</string>
     <string name="please_sign_in_to_your_account">Please sign in to your account</string>
     <string name="login_id">Enter User id</string>

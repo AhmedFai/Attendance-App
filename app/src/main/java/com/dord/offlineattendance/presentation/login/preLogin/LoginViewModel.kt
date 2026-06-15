@@ -95,7 +95,7 @@ class LoginViewModel @Inject constructor(
 
     fun onLogin(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            if (loginRequest.loginId.equals("DEMOACCOUNT", true) && loginRequest.password == "nic") {
+            if (loginRequest.loginId.equals("TESTUSER", true) && loginRequest.password == "Test@123") {
                 saveSession("DEMO_USER_ID", "DUMMY_TOKEN")
                 // Naya event fire karo jo bootstrap ko bataye ki ye demo hai
                 _loginUiEvent.emit(LoginUiEvent.StartBootStrapDemo)

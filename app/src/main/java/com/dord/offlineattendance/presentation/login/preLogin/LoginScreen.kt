@@ -201,11 +201,11 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.spacedBy(dimens.spaceXL),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+               /* Image(
                     painter = painterResource(id = R.drawable.ic_ddgky),
                     contentDescription = stringResource(R.string.ddugky),
                     modifier = Modifier.height(dimens.space4XL)
-                )
+                )*/
                 Image(
                     painter = painterResource(id = R.drawable.ic_rseti),
                     contentDescription = stringResource(R.string.rseti),
@@ -226,11 +226,11 @@ fun LoginScreen(
             )
             Spacer(Modifier.height(dimens.spaceXL))
 
-            // Domain Selector
+         /*   // Domain Selector
             DomainDropDown(
                 selected = domain,
                 onSelect = viewModel::onDomainChange
-            )
+            )*/
 
             Spacer(Modifier.height(dimens.spaceL))
 
