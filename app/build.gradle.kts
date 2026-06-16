@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.dord.offlineattendance"
-    compileSdk = 35l
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.dord.offlineattendance"
