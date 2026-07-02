@@ -461,11 +461,11 @@ fun startAuthentication(
             userId
         )
         // Todo: Demo
-//        putExtra(
-//            Constants.EXTRA_USER_ID,
-//            "FAIFAI"
-//        )
-
+     /*   putExtra(
+            Constants.EXTRA_USER_ID,
+            "FAIFAI"
+        )
+*/
         if (callType == Constants.CALL_TYPE_REGISTRATION) {
             putExtra(
                 Constants.EXTRA_USER_NAME,

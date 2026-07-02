@@ -91,9 +91,9 @@ fun AttendanceScreen(
         viewModel.loadUser(userType, userId, batchId)
     }
     // Todo: Demo
-//    val centerLat = "28.6276".toDouble()
-//    val centerLng = "77.2205".toDouble()
-//    val radius = 500f
+  /*  val centerLat = "28.6276".toDouble()
+   val centerLng = "77.2205".toDouble()
+    val radius = 500f*/
     val centerLat = state.batch?.latitude
     val centerLng = state.batch?.longitude
     val radius = state.batch?.radius?.toFloat()
@@ -246,6 +246,14 @@ fun AttendanceScreen(
                                     }
                                 },
                                 onCheckOut = {
+                                    if (state.checkInTime.isNullOrEmpty()) {
+                                        Toast.makeText(
+                                            context,
+                                            "Please do check in first",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        return@AttendanceButtons
+                                    }
                                     //viewModel.onCheckOut()
                                     click = "CHECK-OUT"
                                     if (userId == "DEMO_USER_ID" ||
@@ -298,7 +306,7 @@ private fun startAuthentication(
         putExtra(Constants.EXTRA_CALL_TYPE, Constants.CALL_TYPE_LOGIN)
         putExtra(Constants.EXTRA_USER_ID, userId)
         //Todo: Demo
-        //putExtra(Constants.EXTRA_USER_ID, "FAIFAI")
+       // putExtra(Constants.EXTRA_USER_ID, "FAIFAI")
         putExtra("captured_lat", capturedLat)
         putExtra("captured_lng", capturedLng)
     }

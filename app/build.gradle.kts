@@ -16,16 +16,16 @@ android {
         applicationId = "com.dord.offlineattendance"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -139,8 +139,8 @@ dependencies {
     implementation("com.google.android.datatransport:transport-runtime:2.2.6")
 
     // ML Kit (Vision)
-    implementation("com.google.mlkit:face-detection:16.1.7")
-    implementation("com.google.mlkit:vision-common:16.1.7")
+    implementation("com.google.mlkit:face-detection:16.1.6")
+    implementation("com.google.mlkit:vision-common:17.3.0")
 
     // CameraX
     implementation("androidx.camera:camera-camera2:1.4.1")
